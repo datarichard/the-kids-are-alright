@@ -5,7 +5,7 @@ library(ggthemes)
 
 `%notin%` <- Negate(`%in%`)
 
-home <- "~/Dropbox (Sydney Uni)/HILDA/modern-work/"  
+home <- "~/Dropbox (Sydney Uni)/the-kids-are-alright/"  
 
 hilda <- read_rds(paste0(home, "data/preprocessed.RDS")) 
 
@@ -65,7 +65,7 @@ across all survey years, and especially low in recent surveys",
           axis.title.x = element_text(size = 12))
   
   
-  p3 <- ggplot(.df, aes(x = age, y = wellbeing)) +
+  p2 <- ggplot(.df, aes(x = age, y = wellbeing)) +
     geom_smooth(aes(group = 1), method = "gam", 
                 se=F, color = "black", size = .5, linetype = "dashed") +
     geom_smooth(aes(group = cohort, color = cohort), 
@@ -82,9 +82,9 @@ generations, particularly Millenials (red)",
           legend.title = element_text(size = 10),
           axis.title.x = element_text(size = 12))
   
-  p1 + p3 + 
+  p1 + p2 + 
     plot_annotation(
-      title = "\"The kids are not ok\"",
+      title = "\"The kids are not alright\"",
       caption = "Data source: HILDA Survey 2001-2020") & 
     theme(legend.position = "bottom",
           legend.title = element_blank(),
