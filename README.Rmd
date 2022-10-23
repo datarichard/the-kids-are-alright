@@ -1,0 +1,191 @@
+---
+title: "The kids are alright"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      fig.path = "figures/")
+
+library(tidyverse)
+library(mgcv)
+library(patchwork)
+
+`%notin%` <- Negate(`%in%`)
+```
+
+A study of cohort differences in subjective wellbeing among young people in Australia
+
+```{r import_data}
+hilda.data <- read_rds("data/preprocessed.RDS") %>%
+  select(xwaveid, year, age, ghmh) %>%
+  filter(!is.na(ghmh)) %>%
+  mutate(
+    age_group = case_when(
+      age <= 14 ~ "0-14",  # there is n = 1 fourteen year old
+      age <= 24 ~ "15-24", 
+      age <= 34 ~ "25-34",
+      age <= 44 ~ "35-44",
+      age <= 54 ~ "45-54",
+      age <= 65 ~ "55-64",
+      age <= 75 ~ "65-74",
+      age <= 85 ~ "75-84",
+      TRUE      ~ "85+"),
+    birthyear = year - age,
+    cohort = case_when(
+      birthyear %in% 1900:1929 ~ "1920s",
+      birthyear %in% 1930:1939 ~ "1930s", 
+      birthyear %in% 1940:1949 ~ "1940s",
+      birthyear %in% 1950:1959 ~ "1950s",
+      birthyear %in% 1960:1969 ~ "1960s",
+      birthyear %in% 1970:1979 ~ "1970s",
+      birthyear %in% 1980:1989 ~ "1980s",
+      birthyear %in% 1990:1999 ~ "1990s",
+      birthyear %in% 2000:2009 ~ "2000s", 
+      birthyear %in% 2010:2020 ~ "2010s", 
+      TRUE ~ "problem"
+    )) %>%
+  mutate(xwaveid = factor(xwaveid),
+         ocohort = ordered(cohort),
+         fcohort = factor(cohort))
+```
+
+<br><br>
+
+## Results  
+
+This is the main plot showing birth cohort differences in affective wellbeing (MHi-5 scores). Affective wellbeing (0-100) is getting worse for younger generations, particularly *Millenials* (1990s), however uncertainty is not quantified (e.g., confidence intervals) due to the dependence that exists within birth cohorts due to repeated observations of the same individuals.  
+
+
+##### Figure 1
+
+```{r figure_1, fig.dim=c(8,7)}
+hilda.data %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  ggplot(aes(x = age, y = ghmh)) +
+    geom_smooth(aes(group = 1), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, color = "black", size = .5, linetype = "dashed") +
+    geom_smooth(aes(group = cohort, color = cohort), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, alpha = 0.2) +
+    labs(
+      subtitle = "Smoothed MHi-5 scores (0-100) between 2001-2020", 
+      y = "", x = "\n Age (years)",
+      caption = "data source: HILDA") +
+    scale_color_manual(values = grey.colors(6, rev = T)) +
+    theme_minimal() +
+    theme(plot.title = element_text(face = "bold"),
+          legend.title = element_text(size = 10),
+          legend.position = c(0.9, 0.2),
+          axis.title.x = element_text(size = 12))
+```
+
+<br>
+
+#### Cohort comparisons  
+
+We need to compare the smooth trends of each cohort to the next generation (e.g., 1990s vs 1980s) so as to infer whether the trend is increasing or decreasing _relative_ to the next. We cannot compare trends from birth cohorts more than two decades apart since there are no overlapping age groups observed, so we will restrict ourselves to the five pairwise comparisons between each cohort and the next.  
+
+We will use the generalized additive modelling (GAM) method provided by Wood et al (see references).  
+
+The smooth trends are expressed as spline functions and estimated by quadratically penalized likelihood maximization for automatic smoothness selection. 
+
+$$
+y_{it} = \alpha(cohort_{[k]}) + f_{[k]} (age_{it}) + \epsilon_{it} \\
+\epsilon \sim N(0, \Delta \sigma^2)
+$$
+
+Where $\alpha_{[k]}$ is the mean subjective wellbeing score for each $k = 1...K$ cohort, and $f_{[k]}$ are smooth functions for the trend in MHi-5 scores over age for each cohort. To account for the person-level dependency when survey participants are measured more than once, we included a first-order autoregressive model AR(1) for the residuals based on the unique crosswave ID for each person $i = 1...I$.  
+
+The smooth estimates, along with 95% credible/confidence intervals (which include the uncertainty about the overall mean as well as the centred smooth itself), are shown below. In each row the older cohort is shown on the left as the reference smooth, and the estimated difference between the reference and the younger cohort is shown on the right as the difference smooth.  
+
+```{r gamm_fun, include=F}
+difference_gam <- function(.dat, cohorts) {
+  
+  cohorts <- sort(cohorts)
+  
+  .dat %>%
+    filter(cohort %in% cohorts) %>%
+    droplevels() %>%
+    gamm(
+      formula = ghmh ~ cohort + s(age) + s(age, by = ocohort),
+      correlation = corAR1(form=~1|xwaveid), # AR1 errors within xwaveid
+      method = "REML",
+      data = .
+    ) -> fit
+  
+  plot_obj <- plot(fit$gam, seWithMean = T)
+  # seWithMean = T for confidence intervals that include the uncertainty about
+  # the overall mean as well as the centred smooth itself. This results in inter-
+  # vals with close to nominal (frequentist) coverage probabilities (Marra & 
+  # Woods, 2012).
+  
+  bind_rows(
+    
+    as.data.frame(plot_obj[[1]][c("x", "se", "fit")]) %>%
+      mutate(cohort = paste(cohorts[1], "smooth")),
+    
+    as.data.frame(plot_obj[[2]][c("x", "se", "fit")]) %>%
+      mutate(cohort = paste(cohorts[2], "difference"))
+  )
+  
+}
+
+difference_plot <- function(.dat) {
+  ggplot(.dat, aes(x = x, y = fit)) +
+    geom_hline(aes(yintercept=0), linetype = "dotted") + 
+    geom_ribbon(aes(ymin = fit - se, ymax = fit + se, y = NULL),
+                fill = "grey80") +
+    geom_line() +
+    facet_wrap(~cohort) +
+    labs(x = "Age", y = "centred estimate") +
+    theme_minimal()
+}
+
+p1 <- difference_gam(hilda.data, c("1990s", "1980s")) %>% 
+  difference_plot()
+
+p2 <- difference_gam(hilda.data, c("1980s", "1970s")) %>% 
+  difference_plot()
+
+p3 <- difference_gam(hilda.data, c("1970s", "1960s")) %>% 
+  difference_plot()
+
+p4 <- difference_gam(hilda.data, c("1960s", "1950s")) %>% 
+  difference_plot()
+
+p5 <- difference_gam(hilda.data, c("1950s", "1940s")) %>% 
+  difference_plot()
+```
+
+```{r figure_2, fig.dim=c(7, 15)}
+p1 / p2 / p3 / p4 / p5
+```
+
+<br>
+
+The difference smooths reveal where the younger cohort is substantially different from the older reference cohort where the confidence bounds exclude zero (dotted line). Inspection of the _1990s difference_ panel reveals the youngest cohort's wellbeing trajectory is significantly declining with age relative to the 1980s cohort. After the age of 25, a person born in the 1990s is expected to have lower subjective wellbeing than an equivalently aged person born earlier (e.g., 1980s). The other cohorts also have declining trajectories relative to their reference (older) cohort, albeit not as substantial a decline and not as reliably beyond zero as the 1990s cohort. The exception is the 1950s cohort which has a (non-significantly) increasing trajectory relative to the reference cohort, consistent with the prevailing view in popular and social media that the "Baby Boomers" have had a great time at the expense of the other generations.  
+
+
+
+
+
+<br><br>
+
+## References  
+
+Wood, S.N., N. Pya and B. Saefken (2016), Smoothing parameter and model selection for general smooth models (with discussion). Journal of the American Statistical Association 111, 1548-1575 doi: 10.1080/01621459.2016.1180986  
+
+Wood, S.N. (2011) Fast stable restricted maximum likelihood and marginal likelihood estimation of semiparametric generalized linear models. Journal of the Royal Statistical Society (B) 73(1):3-36  
+
+Wood, S.N. (2004) Stable and efficient multiple smoothing parameter estimation for generalized additive models. J. Amer. Statist. Ass. 99:673-686  
+
+Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for Generalized Additive Model Components. Scandinavian Journal of Statistics, 39(1), 53-74  
+
+Wood, S.N. (2013a) A simple test for random effects in regression models. Biometrika 100:1005-1010  
+
+Wood, S.N. (2013b) On p-values for smooth components of an extended generalized additive model. Biometrika 100:221-228  
+
+
+
