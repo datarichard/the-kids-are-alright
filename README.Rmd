@@ -1,6 +1,12 @@
 ---
 title: "The kids are alright"
-output: github_document
+output:
+  github_document:
+    df_print: kable
+bibliography: src/references.bib
+csl: src/apa-6th-edition.csl
+editor_options:
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +20,16 @@ library(patchwork)
 `%notin%` <- Negate(`%in%`)
 ```
 
-A study of cohort differences in subjective wellbeing among young people in Australia
+A study of cohort differences in subjective wellbeing among young people in Australia  
+
+## Age-, Period-, and Cohort-Effects  
+
+Since @fienberg1978identification argued that cohort effects are an important consideration when estimating trends of a variable which changes with age over the lifespan, social scientists, demographers and epidemiologists have recognized that a critical concern is whether the changes observed with age are also (partly) due to period or cohort effects [e.g., @fukuda2013happiness; @burns2020age]. Period effects refer to variance over time that is common across all age groups, such as due to a world war or a global pandemic that took place in a certain period of history. Cohort effects, by contrast, refer to variance over time that is specific to individuals born in or around certain years (i.e., generational differences between millenials and boomers).  
+
+Because age effects are a linear combination of period and cohort effects (A = P - C), there is no technical way to solve the problem and identify the unique effect of each in a linear model [@fienberg1978identification; @luo2013assessing; @holford1983estimation]. Adding covariates to the linear APC model changes the model but not the identification problem. The only way to make it go away is by fiat; that is by conceding some constraint whose appropriateness cannot be tested [@fienberg2013cohort; @fienberg1985specification; @mason1985cohort].  
+
+The APC problem is a linear effects problem, and nonlinear effects and possibly some interactions are estimable, depending on the nature of the data.  
+
 
 ```{r import_data}
 hilda.data <- read_rds("data/preprocessed.RDS") %>%
@@ -71,8 +86,7 @@ hilda.data %>%
                 se=F, alpha = 0.2) +
     labs(
       subtitle = "Smoothed MHi-5 scores (0-100) between 2001-2020", 
-      y = "", x = "\n Age (years)",
-      caption = "data source: HILDA") +
+      y = "", x = "\n Age (years)") +
     scale_color_manual(values = grey.colors(6, rev = T)) +
     theme_minimal() +
     theme(plot.title = element_text(face = "bold"),
@@ -87,12 +101,16 @@ hilda.data %>%
 
 We need to compare the smooth trends of each cohort to the next generation (e.g., 1990s vs 1980s) so as to infer whether the trend is increasing or decreasing _relative_ to the next. We cannot compare trends from birth cohorts more than two decades apart since there are no overlapping age groups observed, so we will restrict ourselves to the five pairwise comparisons between each cohort and the next.  
 
-We will use the generalized additive modelling (GAM) method provided by Wood et al (see references).  
+We will use the generalized additive modelling (GAM) method provided by Wood et al [@wood2004stable; @wood2006low; @wood2011fast; @wood2016smoothing].  
 
 The smooth trends are expressed as spline functions and estimated by quadratically penalized likelihood maximization for automatic smoothness selection. 
 
 $$
-y_{it} = \alpha(cohort_{[k]}) + f_{[k]} (age_{it}) + \epsilon_{it} \\
+y_{it} = \alpha(cohort_{[k]}) + f_{[k]} (age_{it}) + \epsilon_{it}
+$$
+
+
+$$
 \epsilon \sim N(0, \Delta \sigma^2)
 $$
 
@@ -100,7 +118,7 @@ Where $\alpha_{[k]}$ is the mean subjective wellbeing score for each $k = 1...K$
 
 The smooth estimates, along with 95% credible/confidence intervals (which include the uncertainty about the overall mean as well as the centred smooth itself), are shown below. In each row the older cohort is shown on the left as the reference smooth, and the estimated difference between the reference and the younger cohort is shown on the right as the difference smooth.  
 
-```{r gamm_fun, include=F}
+```{r gamm_fits, eval=F}
 difference_gam <- function(.dat, cohorts) {
   
   cohorts <- sort(cohorts)
@@ -132,6 +150,23 @@ difference_gam <- function(.dat, cohorts) {
   
 }
 
+difference_gam(hilda.data, c("1990s", "1980s")) %>%
+  write_rds("results/gam_90v80s.rds")
+
+difference_gam(hilda.data, c("1980s", "1970s")) %>%
+  write_rds("results/gam_80v70s.rds")
+
+difference_gam(hilda.data, c("1970s", "1960s")) %>%
+  write_rds("results/gam_70v60s.rds")
+
+difference_gam(hilda.data, c("1960s", "1950s")) %>%
+  write_rds("results/gam_60v50s.rds")
+
+difference_gam(hilda.data, c("1950s", "1940s")) %>%
+  write_rds("results/gam_50v40s.rds")
+```
+
+```{r figure_2, fig.dim=c(7, 15)}
 difference_plot <- function(.dat) {
   ggplot(.dat, aes(x = x, y = fit)) +
     geom_hline(aes(yintercept=0), linetype = "dotted") + 
@@ -143,29 +178,22 @@ difference_plot <- function(.dat) {
     theme_minimal()
 }
 
-p1 <- difference_gam(hilda.data, c("1990s", "1980s")) %>% 
-  difference_plot()
+p1 <- difference_plot(read_rds("results/gam_90v80s.rds"))
 
-p2 <- difference_gam(hilda.data, c("1980s", "1970s")) %>% 
-  difference_plot()
+p2 <- difference_plot(read_rds("results/gam_80v70s.rds"))
 
-p3 <- difference_gam(hilda.data, c("1970s", "1960s")) %>% 
-  difference_plot()
+p3 <- difference_plot(read_rds("results/gam_70v60s.rds"))
 
-p4 <- difference_gam(hilda.data, c("1960s", "1950s")) %>% 
-  difference_plot()
+p4 <- difference_plot(read_rds("results/gam_60v50s.rds"))
 
-p5 <- difference_gam(hilda.data, c("1950s", "1940s")) %>% 
-  difference_plot()
-```
+p5 <- difference_plot(read_rds("results/gam_50v40s.rds"))
 
-```{r figure_2, fig.dim=c(7, 15)}
 p1 / p2 / p3 / p4 / p5
 ```
 
 <br>
 
-The difference smooths reveal where the younger cohort is substantially different from the older reference cohort where the confidence bounds exclude zero (dotted line). Inspection of the _1990s difference_ panel reveals the youngest cohort's wellbeing trajectory is significantly declining with age relative to the 1980s cohort. After the age of 25, a person born in the 1990s is expected to have lower subjective wellbeing than an equivalently aged person born earlier (e.g., 1980s). The other cohorts also have declining trajectories relative to their reference (older) cohort, albeit not as substantial a decline and not as reliably beyond zero as the 1990s cohort. The exception is the 1950s cohort which has a (non-significantly) increasing trajectory relative to the reference cohort, consistent with the prevailing view in popular and social media that the "Baby Boomers" have had a great time at the expense of the other generations.  
+The difference smooths reveal where the younger cohort is substantially different from the older reference cohort where the confidence bounds exclude zero (dotted line) [@marra2012coverage; @wood2013p]. Inspection of the _1990s difference_ panel reveals the youngest cohort's wellbeing trajectory is significantly declining with age relative to the 1980s cohort. After the age of 25, a person born in the 1990s is expected to have lower subjective wellbeing than an equivalently aged person born earlier (e.g., 1980s). The other cohorts also have declining trajectories relative to their reference (older) cohort, albeit not as substantial a decline and not as reliably beyond zero as the 1990s cohort. The exception is the 1950s cohort which has a (non-significantly) increasing trajectory relative to the reference cohort, consistent with the prevailing view in popular and social media that the "Baby Boomers" have had a great time at the expense of the other generations.  
 
 
 
@@ -175,17 +203,15 @@ The difference smooths reveal where the younger cohort is substantially differen
 
 ## References  
 
-Wood, S.N., N. Pya and B. Saefken (2016), Smoothing parameter and model selection for general smooth models (with discussion). Journal of the American Statistical Association 111, 1548-1575 doi: 10.1080/01621459.2016.1180986  
 
-Wood, S.N. (2011) Fast stable restricted maximum likelihood and marginal likelihood estimation of semiparametric generalized linear models. Journal of the Royal Statistical Society (B) 73(1):3-36  
 
-Wood, S.N. (2004) Stable and efficient multiple smoothing parameter estimation for generalized additive models. J. Amer. Statist. Ass. 99:673-686  
 
-Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for Generalized Additive Model Components. Scandinavian Journal of Statistics, 39(1), 53-74  
 
-Wood, S.N. (2013a) A simple test for random effects in regression models. Biometrika 100:1005-1010  
 
-Wood, S.N. (2013b) On p-values for smooth components of an extended generalized additive model. Biometrika 100:221-228  
+
+
+
+
 
 
 
