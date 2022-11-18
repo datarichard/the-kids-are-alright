@@ -1,47 +1,119 @@
-The kids are alright
+The kids are not alright: Declines in mental health among Australia’s
+youngest birth cohorts
 ================
 
-A study of cohort differences in subjective wellbeing among young people
-in Australia
+*A study of cohort differences in subjective wellbeing among young
+people in Australia*
 
-## Age-, Period-, and Cohort-Effects
+<br>
 
-Since Fienberg & Mason (1978) argued that cohort effects are an
-important consideration when estimating trends of a variable which
-changes with age over the lifespan, social scientists, demographers and
-epidemiologists have recognized that a critical concern is whether the
-changes observed with age are also (partly) due to period or cohort
-effects (e.g., Fukuda, 2013; Burns, Butterworth, & Crisp, 2020). Period
-effects refer to variance over time that is common across all age
-groups, such as due to a world war or a global pandemic that took place
-in a certain period of history. Cohort effects, by contrast, refer to
-variance over time that is specific to individuals born in or around
-certain years (i.e., generational differences between millenials and
-boomers).
+Recent deterioration in mental health in Australia, especially among
+young people, has spurred much speculation around the causes of the
+decline and what can be done to arrest it (Skinner, Occhipinti, Song, &
+Hickie, 2022). For instance, the proportion of people reporting high or
+very high levels of psychological distress in Australia has increased
+year-on-year from 10.8% in 2011-12 to 15.4% in 2020-21 according to the
+ABS (Australian Bureau of Statistics, 2022). This increase was
+particularly prevalent among younger age groups, with 18-24 year olds
+reporting the largest increase from 11.8% in 2011-12 to 20.1% in
+2020-21. These increases are also mirrored in longitudinal surveys of
+mental health such as HILDA (Butterworth, Watson, & Wooden, 2020), as
+well as the prevalence of recent mental disorders, which has increased
+from 13.4% in 2011-12 to 20.4% in 2020-21, including almost two in five
+people (39.6%) aged 16-24.
 
-Because age effects are a linear combination of period and cohort
-effects (A = P - C), there is no technical way to solve the problem and
-identify the unique effect of each in a linear model (Fienberg & Mason,
-1978; Holford, 1983; Luo, 2013). Adding covariates to the linear APC
-model changes the model but not the identification problem. The only way
-to make it go away is by fiat; that is by conceding some constraint
-whose appropriateness cannot be tested (Fienberg, 2013; Fienberg &
-Mason, 1985; Mason & Fienberg, 1985).
+Other OECD countries have observed similar declines in population levels
+of mental health, including among young people (UK, USA, Netherlands,
+Japan, see Table 2 in Ormel, Hollon, Kessler, Cuijpers, & Monroe, 2022;
+hidaka2012depression; Nishi, Susukida, Usuda, Mojtabai, & Yamanouchi,
+2018), but not all (e.g., Canada, Patten et al., 2016). In many cases
+the changes can be attributable to the overall growth of the global
+population and its changing age structure (i.e., *age effects*) (Baxter
+et al., 2014; Ferrari et al., 2013; Vos et al., 2016), or loss of
+economic opportunity due to periods of disruption such as the GFC or the
+COVID-19 global pandemic (i.e., *period effects*) (Butterworth, Schurer,
+Trinh, Vera-Toscano, & Wooden, 2022; Glozier, Morris, & Schurer, 2022).
 
-The APC problem is a linear effects problem, and nonlinear effects and
-possibly some interactions are estimable, depending on the nature of the
-data.
+Age effects can influence the population-level trends when mental health
+changes over the lifespan as part of normal development/aging and the
+age-structure of the population also changes to include more age-groups
+with lower mental health. Comparing age groups over the population has
+revealed a U-shaped pattern in affective wellbeing (similar to mental
+health) in large cross-sectional surveys, whereby hedonic aspects of
+wellbeing decline from young age-groups (e.g., 18-20) to middle-age
+(50-55) before increasing to a peak at 70-75, although there are
+cultural and national differences (Steptoe, Deaton, & Stone, 2015;
+Stone, Schwartz, Broderick, & Deaton, 2010). In Australia, Burns,
+Butterworth, & Crisp (2020) described the cross-sectional differences in
+the mental health of Australian adults using 17 years of HILDA data
+(2001-2017). They report only very small differences in mental health
+(MHi-5 scores) over age-groups, however there was an emerging downward
+trend for the youngest (18-24) and very oldest adults (75+) in the more
+recent years (*Their cohort trajectory analysis indicated there is an
+improvement in mental health as people age before a substantial decline
+after 75 yo, but little evidence of any cohort-specific effects*).
+
+Period effects refer to variance over time that is common across all age
+groups, such as due to the COVID-19 global pandemic that took place in
+2020-2021. For example in Australia, lockdowns during COVID-19
+significantly reduced the mental health of women with children in 2020
+(Butterworth et al., 2022; Schurer, Atalay, Glozier, Vera-Toscano, &
+Wooden, 2022). However COVID-19 cannot explain the longitudinal trends
+in mental health observed before 2020 in Australia. Butterworth et al.
+(2020) found an increase in psychological distress (K10 scores) from
+4.8% to 7.4% between 2007 to 2017, but only among 18-34 and 35-64 age
+groups in a representative longitudinal sample. The GFC in 2008 may
+represent a period effect responsible for such a decline, as it appears
+restricted to working age people who may be more adversely impacted by
+wide-spread changes in economic conditions.
+
+Because mental health changes over time and with age for a variety of
+reasons (broadly distinguished so far as age- or period- effects),
+locating the source of any varying trend is critical before targeted
+interventions can be effective. The evidence reviewed so far indicates
+trends in mental health may exist yet comparisons between
+cross-sectional and longitudinal studies reveals inconsistencies (e.g.,
+Butterworth et al., 2020). Since Fienberg & Mason (1978), social
+scientists, demographers and epidemiologists have recognized that a
+critical concern is whether the changes observed are due to age-,
+period-, or *cohort* effects (e.g., Bell, 2020; Burns et al., 2020;
+Fukuda, 2013; Kratz & Brüderl, 2021). Cohort effects refer to variance
+over time that is specific to individuals born in or around certain
+years (i.e., generational differences between “millenials” and
+“boomers”). Because age effects are a linear combination of period
+and cohort effects (A = P - C), there is no technical way to solve the
+dependency and identify the unique effect of each in a linear model
+(Fienberg & Mason, 1978; Holford, 1983; Luo, 2013). Adding covariates to
+the linear APC model changes the model but not the identification
+problem. The only way to make it go away is by fiat; that is by
+conceding some constraint whose appropriateness cannot be tested
+(Fienberg, 2013; Fienberg & Mason, 1985; Mason & Fienberg, 1985), or by
+focusing on nonlinear effects and possibly some interactions (Bell,
+2020).
+
+We set out to distinguish whether the widely-observed decline in mental
+health in Australia is due to variation with age, or common effects of
+the recent period, or differences between birth cohorts. To identify any
+recent period effect, we explicitly modelled mental health (MHi-5
+scores) for each age-group as a nonlinear smooth function of time
+(year). To identify cohort effects from age effects, we explicitly
+modeled mental health for each birthcohort as a nonlinear smooth
+function of age. Comparisons between smooths allowed us to determine
+where differences between age-groups or cohorts occurred.
 
 <br><br>
 
 ## Results
 
-This is the main plot showing birth cohort differences in affective
-wellbeing (MHi-5 scores). Affective wellbeing (0-100) is getting worse
-for younger generations, particularly *Millenials* (1990s), however
-uncertainty is not quantified (e.g., confidence intervals) due to the
-dependence that exists within birth cohorts due to repeated observations
-of the same individuals.
+This is the main plot showing birth cohort differences in MHi-5 scores.
+Mental health (MHi-5) is worse for younger age-groups and even worse
+again for more recent younger age groups (left panel) - consistent with
+a cohort effect. The right panel shows mental health is worse for
+younger generations, particularly *Millenials* born in the 1990s who
+have a lower score at the same age as older generations. Uncertainty is
+not quantified (e.g., confidence intervals) due to the dependence that
+exists within birth cohorts from repeated observations of the same
+individuals.
 
 ##### Figure 1
 
@@ -65,13 +137,7 @@ The smooth trends are expressed as spline functions and estimated by
 quadratically penalized likelihood maximization for automatic smoothness
 selection.
 
-\[
-y_{it} = \alpha(cohort_{[k]}) + f_{[k]} (age_{it}) + \epsilon_{it}
-\]
-
-\[
-\epsilon \sim N(0, \Delta \sigma^2)
-\]
+$$  $$
 
 Where \(\alpha_{[k]}\) is the mean subjective wellbeing score for each
 \(k = 1...K\) cohort, and \(f_{[k]}\) are smooth functions for the trend
@@ -110,9 +176,69 @@ other generations.
 
 <br><br>
 
+## Appendix
+
+The difference between male and female MHi-5 trajectories is mostly in
+the intercept (overall mean level). Men and women have similar
+trajectory differences between cohorts.
+
+##### Figure A1. Interaction between sex and cohort
+
+![](figures/figure_A1-1.png)<!-- -->
+
+<br>
+
+Excluding the Wave 11 top-up sample does not appear to greatly impact
+the cohort trajectories.
+
+##### Figure A2. Excluding top-up sample
+
+![](figures/figure_A2-1.png)<!-- -->
+
+<br>
+
+K10 scores (psychological distress) were collected in alternate years
+from 2007 to 2019. The corresponding trajectories for each cohort are
+shown below. Psychological distress was higher for younger cohorts than
+older cohorts at the same age.
+
+##### Figure A3. K10 scores (psychological distress)
+
+![](figures/figure_A3-1.png)<!-- -->
+
+<br>
+
+<br><br>
+
 ## References
 
 <div id="refs" class="references">
+
+<div id="ref-abs2022">
+
+Australian Bureau of Statistics. (2022). National Study of Mental Health
+and Wellbeing. *ABS*. Retrieved from
+<https://www.abs.gov.au/statistics/health/mental-health/national-study-mental-health-and-wellbeing/latest-release>
+
+</div>
+
+<div id="ref-baxter2014challenging">
+
+Baxter, A. J., Scott, K. M., Ferrari, A. J., Norman, R. E., Vos, T., &
+Whiteford, H. A. (2014). Challenging the myth of an “epidemic” of common
+mental disorders: Trends in the global prevalence of anxiety and
+depression between 1990 and 2010. *Depression and Anxiety*, *31*(6),
+506–516. <https://doi.org/10.1002/da.22230>
+
+</div>
+
+<div id="ref-bell2020age">
+
+Bell, A. (2020). Age Period Cohort analysis: A review of what we should
+and shouldn’t do. *Annals of Human Biology*, *47*(2), 208–217.
+<https://doi.org/10.1080/03014460.2019.1707872>
+
+</div>
 
 <div id="ref-burns2020age">
 
@@ -120,6 +246,35 @@ Burns, R. A., Butterworth, P., & Crisp, D. A. (2020). Age, sex and
 period estimates of Australia’s mental health over the last 17 years.
 *Australian & New Zealand Journal of Psychiatry*, *54*(6), 602–608.
 <https://doi.org/10.1177/0004867419888289>
+
+</div>
+
+<div id="ref-butterworth2022lockdown">
+
+Butterworth, P., Schurer, S., Trinh, T.-A., Vera-Toscano, E., & Wooden,
+M. (2022). Effect of lockdown on mental health in Australia: Evidence
+from a natural experiment analysing a longitudinal probability sample
+survey. *The Lancet Public Health*.
+<https://doi.org/10.1016/S2468-2667(22)00082-2>
+
+</div>
+
+<div id="ref-butterworth2020trends">
+
+Butterworth, P., Watson, N., & Wooden, M. (2020). Trends in the
+prevalence of psychological distress over time: Comparing results from
+longitudinal and repeated cross-sectional surveys. *Frontiers in
+Psychiatry*, 1345. <https://doi.org/10.3389/fpsyt.2020.595696>
+
+</div>
+
+<div id="ref-ferrari2013burden">
+
+Ferrari, A. J., Charlson, F. J., Norman, R. E., Patten, S. B., Freedman,
+G., Murray, C. J., … Whiteford, H. A. (2013). Burden of depressive
+disorders by country, sex, age, and year: Findings from the global
+burden of disease study 2010. *PLoS Medicine*, *10*(11), e1001547.
+<https://doi.org/10.1371/journal.pmed.1001547>
 
 </div>
 
@@ -156,11 +311,26 @@ Fukuda, K. (2013). A happiness study using age-period-cohort framework.
 
 </div>
 
+<div id="ref-glozier2022happened">
+
+Glozier, N., Morris, R., & Schurer, S. (2022). What happened to the
+predicted covid-19-induced suicide epidemic, and why? *Australian & New
+Zealand Journal of Psychiatry*, 00048674221131500.
+<https://doi.org/10.1177/00048674221131500>
+
+</div>
+
 <div id="ref-holford1983estimation">
 
 Holford, T. R. (1983). The estimation of age, period and cohort effects
 for vital rates. *Biometrics*, 311–324.
 <https://doi.org/10.2307/2531004>
+
+</div>
+
+<div id="ref-kratz2021age">
+
+Kratz, F., & Brüderl, J. (2021). *The age trajectory of happiness*.
 
 </div>
 
@@ -187,6 +357,80 @@ Journal of Statistics*, *39*(1), 53–74.
 Mason, W. M., & Fienberg, S. (1985). *Cohort analysis in social
 research: Beyond the identification problem*. Springer Science &
 Business Media. <https://doi.org/10.1007/978-1-4613-8536-3_1>
+
+</div>
+
+<div id="ref-nishi2018trends">
+
+Nishi, D., Susukida, R., Usuda, K., Mojtabai, R., & Yamanouchi, Y.
+(2018). Trends in the prevalence of psychological distress and the use
+of mental health services from 2007 to 2016 in Japan. *Journal of
+Affective Disorders*, *239*, 208–213.
+<https://doi.org/10.1016/j.jad.2018.07.016>
+
+</div>
+
+<div id="ref-ormel2022more">
+
+Ormel, J., Hollon, S. D., Kessler, R. C., Cuijpers, P., & Monroe, S. M.
+(2022). More treatment but no less depression: The treatment-prevalence
+paradox. *Clinical Psychology Review*, *91*, 102111.
+<https://doi.org/10.1016/j.cpr.2021.102111>
+
+</div>
+
+<div id="ref-patten2016major">
+
+Patten, S. B., Williams, J. V., Lavorato, D. H., Bulloch, A. G., Wiens,
+K., & Wang, J. (2016). Why is major depression prevalence not changing?
+*Journal of Affective Disorders*, *190*, 93–97.
+<https://doi.org/10.1016/j.jad.2015.09.002>
+
+</div>
+
+<div id="ref-schurer2022zero">
+
+Schurer, S., Atalay, K., Glozier, N., Vera-Toscano, E., & Wooden, M.
+(2022). Zero-COVID Policies: Melbourne’s 112-day hard lockdown
+experiment harmed mostly mothers. *medRxiv*.
+<https://doi.org/10.1101/2022.01.30.22270130>
+
+</div>
+
+<div id="ref-skinner2022population">
+
+Skinner, A., Occhipinti, J.-A., Song, Y. J. C., & Hickie, I. B. (2022).
+Population mental health improves with increasing access to treatment:
+Evidence from a dynamic modelling analysis. *BMC Psychiatry*, *22*(1),
+1–11. <https://doi.org/10.1186/s12888-022-04352-w>
+
+</div>
+
+<div id="ref-steptoe2015subjective">
+
+Steptoe, A., Deaton, A., & Stone, A. A. (2015). Subjective wellbeing,
+health, and ageing. *The Lancet*, *385*(9968), 640–648.
+<https://doi.org/10.1016/S0140-6736(13)61489-0>
+
+</div>
+
+<div id="ref-stone2010snapshot">
+
+Stone, A. A., Schwartz, J. E., Broderick, J. E., & Deaton, A. (2010). A
+snapshot of the age distribution of psychological well-being in the
+United States. *Proceedings of the National Academy of Sciences*,
+*107*(22), 9985–9990. <https://doi.org/10.1073/pnas.1003744107>
+
+</div>
+
+<div id="ref-vos2016global">
+
+Vos, T., Allen, C., Arora, M., Barber, R. M., Bhutta, Z. A., Brown, A.,
+… others. (2016). Global, regional, and national incidence,
+prevalence, and years lived with disability for 310 diseases and
+injuries, 1990–2015: A systematic analysis for the Global Burden of
+Disease Study 2015. *The Lancet*, *388*(10053), 1545–1602.
+<https://doi.org/10.1016/S0140-6736(16)31678-6>
 
 </div>
 
