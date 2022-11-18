@@ -1,11 +1,45 @@
-The kids are not alright: Declines in mental health among Australia’s
-youngest birth cohorts
+Recent declines in mental health among young adults in Australia
 ================
+F Botha<sup>1,4</sup>, RW Morris<sup>1-3</sup>, P
+Butterworth<sup>4,5</sup>, N Glozier<sup>1,2</sup>
+
+ 
+
+1.  ARC Centre of Excellence for Children and Families over the Life
+    Course
+2.  Central Clinical School, Faculty of Medicine and Health, University
+    of Sydney, NSW, Australia
+3.  School of Psychology, Faculty of Science, University of Sydney, NSW,
+    Australia
+4.  Melbourne Institute: Applied Economic & Social Research, The
+    University of Melbourne, VIC, Australia
+5.  National Centre for Epidemiology and Population Health, The
+    Australian National University, ACT, Australia
+
+<br><br>
+
+ 
+
+ 
+
+ 
+
+## Abstract
 
 *A study of cohort differences in subjective wellbeing among young
 people in Australia*
 
-<br>
+<br><br>
+
+<br><br>
+
+<br><br>
+
+<br><br>
+
+<br><br>
+
+<br><br>
 
 Recent deterioration in mental health in Australia, especially among
 young people, has spurred much speculation around the causes of the
@@ -25,14 +59,14 @@ people (39.6%) aged 16-24.
 Other OECD countries have observed similar declines in population levels
 of mental health, including among young people (UK, USA, Netherlands,
 Japan, see Table 2 in Ormel, Hollon, Kessler, Cuijpers, & Monroe, 2022;
-hidaka2012depression; Nishi, Susukida, Usuda, Mojtabai, & Yamanouchi,
-2018), but not all (e.g., Canada, Patten et al., 2016). In many cases
-the changes can be attributable to the overall growth of the global
-population and its changing age structure (i.e., *age effects*) (Baxter
-et al., 2014; Ferrari et al., 2013; Vos et al., 2016), or loss of
-economic opportunity due to periods of disruption such as the GFC or the
-COVID-19 global pandemic (i.e., *period effects*) (Butterworth, Schurer,
-Trinh, Vera-Toscano, & Wooden, 2022; Glozier, Morris, & Schurer, 2022).
+Hidaka, 2012; Nishi, Susukida, Usuda, Mojtabai, & Yamanouchi, 2018), but
+not all (e.g., Canada, Patten et al., 2016). In many cases the changes
+can be attributable to the overall growth of the global population and
+its changing age structure (i.e., *age effects*) (Baxter et al., 2014;
+Ferrari et al., 2013; Vos et al., 2016), or loss of economic opportunity
+due to periods of disruption such as the GFC or the COVID-19 global
+pandemic (i.e., *period effects*) (Butterworth, Schurer, Trinh,
+Vera-Toscano, & Wooden, 2022; Glozier, Morris, & Schurer, 2022).
 
 Age effects can influence the population-level trends when mental health
 changes over the lifespan as part of normal development/aging and the
@@ -115,7 +149,7 @@ not quantified (e.g., confidence intervals) due to the dependence that
 exists within birth cohorts from repeated observations of the same
 individuals.
 
-##### Figure 1
+##### Figure 1. Age and cohort effects on mental health
 
 ![](figures/figure_1-1.png)<!-- -->
 
@@ -137,7 +171,9 @@ The smooth trends are expressed as spline functions and estimated by
 quadratically penalized likelihood maximization for automatic smoothness
 selection.
 
-$$  $$
+\(\ \ \ \ y_{it} = \alpha(cohort_{[k]}) + f_{[k]} (age_{it}) + \epsilon_{it}\)
+
+\(\ \ \ \ \epsilon \sim N(0, \Delta \sigma^2)\)
 
 Where \(\alpha_{[k]}\) is the mean subjective wellbeing score for each
 \(k = 1...K\) cohort, and \(f_{[k]}\) are smooth functions for the trend
@@ -154,25 +190,27 @@ shown on the left as the reference smooth, and the estimated difference
 between the reference and the younger cohort is shown on the right as
 the difference smooth.
 
+##### Figure 2. Centered estimates of cohort trajectories (left) and their differences (right)
+
 ![](figures/figure_2-1.png)<!-- -->
 
 <br>
 
-The difference smooths reveal where the younger cohort is substantially
-different from the older reference cohort where the confidence bounds
-exclude zero (dotted line) (Marra & Wood, 2012; Wood, 2013). Inspection
-of the *1990s difference* panel reveals the youngest cohort’s wellbeing
-trajectory is significantly declining with age relative to the 1980s
-cohort. After the age of 25, a person born in the 1990s is expected to
-have lower subjective wellbeing than an equivalently aged person born
-earlier (e.g., 1980s). The other cohorts also have declining
-trajectories relative to their reference (older) cohort, albeit not as
-substantial a decline and not as reliably beyond zero as the 1990s
-cohort. The exception is the 1950s cohort which has a
-(non-significantly) increasing trajectory relative to the reference
-cohort, consistent with the prevailing view in popular and social media
-that the “Baby Boomers” have had a great time at the expense of the
-other generations.
+The difference smooths (right panels) reveal where the younger cohort is
+substantially different from the older reference cohort (left panels)
+where the confidence bounds exclude zero (horizontal line) (Marra &
+Wood, 2012; Wood, 2013). Inspection of the *1990s difference* panel
+reveals the youngest cohort’s wellbeing trajectory is significantly
+declining with age relative to the 1980s cohort. After the age of 25, a
+person born in the 1990s is expected to have lower subjective wellbeing
+than an equivalently aged person born earlier (e.g., 1980s). The other
+cohorts also have declining trajectories relative to their reference
+(older) cohort, albeit not as substantial a decline and not as reliably
+beyond zero as the 1990s cohort. The exception is the 1950s cohort which
+has a (non-significantly) increasing trajectory relative to the
+reference cohort, consistent with the prevailing view in popular and
+social media that the “Baby Boomers” have had a great time at the
+expense of the other generations.
 
 <br><br>
 
@@ -317,6 +355,14 @@ Glozier, N., Morris, R., & Schurer, S. (2022). What happened to the
 predicted covid-19-induced suicide epidemic, and why? *Australian & New
 Zealand Journal of Psychiatry*, 00048674221131500.
 <https://doi.org/10.1177/00048674221131500>
+
+</div>
+
+<div id="ref-hidaka2012depression">
+
+Hidaka, B. H. (2012). Depression as a disease of modernity: Explanations
+for increasing prevalence. *Journal of Affective Disorders*, *140*(3),
+205–214. <https://doi.org/10.1016/j.jad.2011.12.036>
 
 </div>
 

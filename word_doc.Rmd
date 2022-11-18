@@ -2,7 +2,8 @@
 title: "Recent declines in mental health among young adults in Australia"
 author: "F Botha^1,4^, RW Morris^1-3^, P Butterworth^4,5^, N Glozier^1,2^"
 output:
-  github_document:
+  word_document:
+    reference_docx: src/Rmarkdown-for-Word-styles.docx
 bibliography: src/references.bib
 csl: src/apa-6th-edition.csl
 editor_options:
