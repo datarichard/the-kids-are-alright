@@ -24,6 +24,15 @@ library(gtsummary)
 library(flextable)
 
 `%notin%` <- Negate(`%in%`)
+
+# Use the correct age variable hhiage
+# Explain why there is gap in 65-74 in Figure 1 left panel
+# Explain the problem of interpreting a main effect in the presence of a signi-
+# ficant interaction. Start with a test of the (centered) mean difference and 
+# then move to the slope (i.e., interaction)
+# Add a sensitivity analysis excluding the first observation
+# Remove mention of affective wellbeing
+# Add a figure of MHI-5 < 52/64
 ```
 
 \ 
@@ -42,7 +51,7 @@ library(flextable)
 
 \ 
 
-Acknowledgement: This research was supported by the Australian Government through the Australian Research Council's Centre of Excellenece for Children and Families over the Life Course (Project ID CE200100025)
+Acknowledgement: This research was supported by the Australian Government through the Australian Research Council's Centre of Excellence for Children and Families over the Life Course (Project ID CE200100025)
 
 <br><br>
 
@@ -74,9 +83,9 @@ Given the observed deterioration in mental health among Australians over the pas
 
 <br><br>
 
-Recent deterioration in mental health in Australia, especially among young people, has spurred much speculation around the causes of the decline and what can be done to arrest it [@skinner2022population]. For instance, the proportion of Australians reporting high or very high levels of psychological distress has increased year-on-year from 10.8% in 2011-12 to 15.4% in 2020-21 according to the ABS [@abs2022]. This rise in psychological distress was particularly prevalent among younger age groups, with 18-24 year olds reporting the largest increase from 11.8% in 2011-12 to 20.1% in 2020-21. These increases are also mirrored in longitudinal surveys of mental health such as the Household, Income and Labour Dynamics in Australia (HILDA) Survey [@butterworth2020trends], as well as the prevalence of recent mental disorders, which has increased from 13.4% in 2011-12 to 20.4% in 2020-21, including almost two in five people (39.6%) aged 16-24 [@abs2022].
+Recent deterioration in mental health in Australia, especially among young people, has spurred much speculation around the causes of the decline and what can be done to arrest it [@skinner2022population; @peach2022mental]. For instance, the proportion of Australians reporting high or very high levels of psychological distress has increased year-on-year from 10.8% in 2011-12 to 15.4% in 2020-21 according to the ABS [@abs2022]. This rise in psychological distress was particularly prevalent among younger age groups, with 18-24 year olds reporting the largest increase from 11.8% in 2011-12 to 20.1% in 2020-21. These increases are also mirrored in longitudinal surveys of mental health such as the Household, Income and Labour Dynamics in Australia (HILDA) Survey [@butterworth2020trends], as well as the prevalence of recent mental disorders, which has increased from 13.4% in 2011-12 to 20.4% in 2020-21, including almost two in five people (39.6%) aged 16-24 [@abs2022].
 
-Other OECD countries have observed similar declines in population levels of mental health, including among young people in the UK, USA, Netherlands, and Japan [@ormel2022more; @hidaka2012depression; @nishi2018trends], though not all [e.g., Canada, @patten2016major]. In many cases these changes can be attributed to the overall growth of the global population and its changing age structure (i.e., *age effects*) [@vos2016global; @ferrari2013burden; @baxter2014challenging], or loss of economic opportunity due to periods of disruption such as the global financial crisis (GFC) or the COVID-19 pandemic (i.e., *period effects*) [@glozier2022happened; @butterworth2022lockdown].
+Other OECD countries have observed similar declines in population levels of mental health, including among young people in the UK, USA, Netherlands, and Japan [@twenge2019age; @ormel2022more; @hidaka2012depression; @nishi2018trends], though not all [e.g., Canada, @patten2016major]. In many cases these changes can be attributed to the overall growth of the global population and its changing age structure (i.e., *age effects*) [@vos2016global; @ferrari2013burden; @baxter2014challenging], or loss of economic opportunity due to periods of disruption such as the global financial crisis (GFC) or the COVID-19 pandemic (i.e., *period effects*) [@glozier2022happened; @butterworth2022lockdown].
 
 Age effects can influence the population-level trends when mental health changes over the lifespan as part of normal development or aging, and the age-structure of the population also changes to include more age-groups with poorer mental health. Comparing age groups over the population has revealed a U-shaped pattern in affective wellbeing (similar to mental health) in large cross-sectional surveys, whereby hedonic aspects of wellbeing decline from young age-groups (e.g., 18-20) to middle-age (50-55) before increasing to a peak at 70-75, although there are cultural and national differences [@stone2010snapshot; @steptoe2015subjective]. In Australia, @burns2020age described the cross-sectional differences in the mental health of Australian adults using 17 years of HILDA data (2001-2017). Using the mental health inventory (MHI-5), they report only very small differences in mental health over age-groups, however there was an emerging downward trend for the youngest (18-24) and very oldest adults (75+) in the more recent years. A cohort trajectory analysis indicated there is an improvement in mental health as people age before a substantial decline after 75 years of age, but little evidence of any cohort-specific effects.
 
@@ -86,9 +95,9 @@ Because mental health changes over time and with age for various reasons (broadl
 
 Since @fienberg1978identification, researchers have recognised that a critical concern is whether the changes observed are due to age-, period-, or *cohort* effects [e.g., @bell2020age; @fukuda2013happiness; @burns2020age; @kratz2021age]. Cohort effects refer to variance over time that is specific to individuals born in or around certain years (i.e., generational differences between "millenials" and "baby boomers"). Because age effects (A) are a linear combination of period (P) and cohort (C) effects (A = P - C), there is no technical way to solve the dependency and identify the unique effect of each in a linear model [@fienberg1978identification; @luo2013assessing; @holford1983estimation]. Adding covariates to the linear APC model changes the model but not the identification problem. The only way to solve this issue is by fiat; that is by conceding some constraint whose appropriateness cannot be tested [@fienberg2013cohort; @fienberg1985specification; @mason1985cohort], or by focusing on nonlinear effects and possibly some interactions [@bell2020age].
 
-In this paper, we aim to distinguish whether the widely-observed decline in mental health in Australia is due to variation with age, or common effects of the recent period, or differences between birth cohorts. To identify any recent period effect, we explicitly model mental health (MHi-5 scores) for each age-group as a nonlinear smooth function of time. To identify cohort effects from age effects, we explicitly model mental health for each birth cohort as a nonlinear smooth function of age. Comparisons between smooths allow us to determine where any differences between age-groups or cohorts occurred.
+In this paper, we aim to distinguish whether the widely-observed decline in mental health in Australia is due to variation with age, or common effects of the recent period, or differences between birth cohorts. To identify any recent period effect, we explicitly model mental health (MHI-5 scores) for each age-group as a nonlinear smooth function of time. To identify cohort effects from age effects, we explicitly model mental health for each birth cohort as a nonlinear smooth function of age. Comparisons between smooths allow us to determine where any differences between age-groups or cohorts occurred.
 
-## Methods
+## Methods  
 
 ```{r import_data}
 hilda.data <- read_rds("data/preprocessed.RDS") %>% 
@@ -124,6 +133,37 @@ hilda.data <- read_rds("data/preprocessed.RDS") %>%
          fcohort = factor(cohort))
 ```
 
+#### Sample selection  
+
+The sample included all persons over the age of 14 in the household who completed the SCQ (Self Completion Questionnaire) in each year. The birth cohort of each person were defined by the decade of birth year (1940s, 1950s, 1960s, 1970s, 1980s, 1990s). Thus persons can only contribute to a single birth cohort, but can be observed multiple times across survey years/ages. Persons were excluded if they were born prior to 1940 or after 1999, as after stratification by age they represented cohorts with sample sizes smaller than desirable for estimation of penalised nonlinear GAMs. An MHi-5 score was estimated for each person/year for which there were valid responses on greater than or equal to half the items, where missing data was replaced with the average score on the valid items (imputation was performed by  HILDA, as per the planned survey design to minimise attrition and sampling error). Thus missing scores were excluded on a year-by-person basis. Demographic details of the sample are provided in the Results in Table 1 below.   
+
+
+```
+please add any further details about sample selection here  
+```
+
+<br><br>
+
+#### Measures  
+
+The MHi-5 is a well-validated subset of 5 items from the mental health component of SF-36 dealing with positive and negative aspects of mental health [@batterham2018assessing; @cuijpers2009screening; @ware2000sf; @ware1992mos]:  
+
+1. "Been a nervous person"
+2. "Felt so down in the dumps nothing could cheer you up"
+3. "Felt calm and peaceful"
+4. "Felt down"
+5. "Been a happy person"  
+
+Items were scored to ensure higher scores represented better mental health.  
+
+```
+if appropriate please add some blurb about how good the MHi-5 is, or how widely used/useful it is in Australia
+```
+
+<br><br>
+
+#### Analysis  
+
 We estimate penalized smooth trends for each cohort using restricted maximum likelihood (REML) in a generalized additive mixed modelling (GAMM) approach, described by Wood et al [@wood2004stable; @wood2006low; @wood2011fast; @wood2016smoothing]. This is an analogue to a linear multilevel model with varying intercepts and slopes among the cohorts, but here the slopes are allowed to "wiggle". The model includes a global smoothing term for the effect of age as well as cohort-specific terms, so each cohort is allowed to have it's own functional response but the penalty ensures that functions too far from average are penalized.
 
 Each smoother $f_k$ is represented by a sum of $K$ simpler, fixed basis functions. The basis functions (splines) were estimated by quadratically penalized likelihood maximization for automatic smoothness selection, with a starting value of $K=9$.
@@ -134,10 +174,10 @@ $\ \ \ \ \epsilon_i \sim N(0, \phi \sigma^2)$
 
 Where $y_{it}$ is the person-centered MHI-5 score, $\alpha_i$ is the person-level mean MHI-5 score, $\beta_{[k]}$ is the mean MHI-5 score for each $k = 1...K$ birth cohort, and $f_{[k]}$ are smooth functions for the trend in MHI-5 scores over age for each cohort. To account for the person-level dependency when survey participants are measured more than once, we included a first-order autoregressive AR(1) term $\phi$ for the residuals based on the unique crosswave ID for each person $i = 1...I$, which is equivalent to including the person-level random intercept $\zeta_i$ nested within cohort.
 
-We aimed to compare the smooth trends of each cohort to the next generation (e.g., 1990s vs 1980s) so as to infer whether the trend is increasing or decreasing *relative* to the next. We cannot compare trends from birth cohorts more than two decades apart since there are few or none overlapping age groups observed, so we restrict ourselves to the five ($K-1$) pairwise comparisons between each cohort and the next.
+Wald tests were used for pairwise comparisons of the average difference in MHI-5 scores between each cohort and the next generation (e.g., 1990s vs 1980s). We did not compare cohorts more than a decade apart since there are few or no overlapping age groups observed, so we restricted ourselves to the five ($K-1$) pairwise comparisons between each cohort and the next oldest cohort (i.e., the *reference* cohort). Even so the average difference in mental health between cohorts is confounded with the effect of age. To control for differences in age between cohorts, it is necessary to compare the estimated smooth trends of each cohort over the same age range. Thus we estimated the $K-1$ pairwise differences between each smooth trend and it's reference so as to infer whether the difference is increasing or decreasing (i.e., the trend *relative* to the reference). The smooth trends in this comparison were centered for identifiability reasons, and so any change in trend is centered around zero [@marra2012coverage; @wood2013p].  
 
 ```{r gamm_fits, eval=F}
-difference_gam_orig <- function(.dat, cohorts) {
+difference_gam_unscaled <- function(.dat, cohorts) {
   
   cohorts <- sort(cohorts)
   
@@ -152,7 +192,7 @@ difference_gam_orig <- function(.dat, cohorts) {
     ) 
 }
 
-difference_gam <- function(.dat, cohorts) {
+difference_gamz <- function(.dat, cohorts) {
   
   cohorts <- sort(cohorts)
   
@@ -175,20 +215,20 @@ difference_gam <- function(.dat, cohorts) {
 
 
 
-difference_gam(hilda.data, c("1990s", "1980s")) %>%
-  write_rds("results/gam_90v80s.rds")
+difference_gamz(hilda.data, c("1990s", "1980s")) %>%
+  write_rds("results/gam_90v80z.rds")
 
-difference_gam(hilda.data, c("1980s", "1970s")) %>%
-  write_rds("results/gam_80v70s.rds")
+difference_gamz(hilda.data, c("1980s", "1970s")) %>%
+  write_rds("results/gam_80v70z.rds")
 
-difference_gam(hilda.data, c("1970s", "1960s")) %>%
-  write_rds("results/gam_70v60s.rds")
+difference_gamz(hilda.data, c("1970s", "1960s")) %>%
+  write_rds("results/gam_70v60z.rds")
 
-difference_gam(hilda.data, c("1960s", "1950s")) %>%
-  write_rds("results/gam_60v50s.rds")
+difference_gamz(hilda.data, c("1960s", "1950s")) %>%
+  write_rds("results/gam_60v50z.rds")
 
-difference_gam(hilda.data, c("1950s", "1940s")) %>%
-  write_rds("results/gam_50v40s.rds")
+difference_gamz(hilda.data, c("1950s", "1940s")) %>%
+  write_rds("results/gam_50v40z.rds")
 ```
 
 <br><br>
@@ -267,15 +307,15 @@ hilda.data %>%
 
 ```{r gam_list}
 gam.list <- list(
-  `90v80s` = read_rds("results/gam_90v80s.rds") %>% .$gam,
-  `80v70s` = read_rds("results/gam_80v70s.rds") %>% .$gam,
-  `70v60s` = read_rds("results/gam_70v60s.rds") %>% .$gam,
-  `60v50s` = read_rds("results/gam_60v50s.rds") %>% .$gam,
-  `50v40s` = read_rds("results/gam_50v40s.rds") %>% .$gam
+  `90v80s` = read_rds("results/gam_90v80_zp.rds") %>% .$gam,
+  `80v70s` = read_rds("results/gam_80v70_zp.rds") %>% .$gam,
+  `70v60s` = read_rds("results/gam_70v60_zp.rds") %>% .$gam,
+  `60v50s` = read_rds("results/gam_60v50_zp.rds") %>% .$gam,
+  `50v40s` = read_rds("results/gam_50v40_zp.rds") %>% .$gam
 )
 ```
 
-Figure 1 shows changes in mental health scores (MHI-5) over time by age (left panel), as well as birth cohort (right panel), where the dotted line represents the average age effect ignoring cohort. Mental health is worse for younger age-groups and even worse again for more recent younger age groups (left panel), that is, consistent with a cohort effect. The right panel shows mental health is worse for younger generations, where deviations from the dotted line indicate the presence of a cohort effect. In particular *Millenials* born in the 1990s have a lower score at the same age as older generations, where at age 30 the average MHI-5 score (on the 0-100 scale) of those born in the 1990s is about 67, compared to about 72.5 and 74 for people born in the 1908s and 1970s respectively. Uncertainty is not quantified (e.g., confidence intervals) in these plots, but statistical comparison of cohorts is displayed further below in Figure 2.
+Figure 1 shows changes in mental health scores (MHI-5) over time by age (left panel), as well as birth cohort (right panel), where the dotted line represents the average age effect ignoring cohort. Mental health is worse for younger age-groups and even worse again for more recent younger age groups (left panel), that is, consistent with a cohort effect. The right panel shows mental health is worse for younger generations, where deviations from the dotted line indicate the presence of a cohort effect. In particular *Millenials* born in the 1990s have a lower score at the same age as older generations, where at age 30 the average MHI-5 score (on the 0-100 scale) of those born in the 1990s is about 67, compared to about 72.5 and 74 for people born in the 1908s and 1970s respectively. Uncertainty is not quantified (e.g., confidence intervals) in these plots, but statistical comparison of the average difference between each cohort and the next oldest cohort (reference cohort) is presented below in Table 3.  
 
 ##### Figure 1. Age and cohort effects on mental health
 
@@ -290,7 +330,7 @@ p1 <- ggplot(plot.data, aes(x = year, y = ghmh)) +
   geom_smooth(aes(group = age_group, color = age_group), 
               method = "gam", formula = y ~ s(x, bs = "cs"), se=F) +
   labs(
-    subtitle = paste("Smoothed MHi-5 scores 0-100 (by age group)"), 
+    subtitle = paste("Smoothed MHI-5 scores 0-100 (by age group)"), 
     y = "", x = "Survey year") +
   coord_cartesian(ylim = ylims) +
   scale_color_manual(values = rev(blues9)) +
@@ -309,7 +349,7 @@ p2 <- ggplot(plot.data, aes(x = age, y = ghmh)) +
               method = "gam", formula = y ~ s(x, bs = "cs"), 
               se=F, alpha = 0.2) +
   labs(
-    subtitle = "Smoothed MHi-5 scores 0-100 (by cohort)", 
+    subtitle = "Smoothed MHI-5 scores 0-100 (by cohort)", 
     y = "", x = "\n Age (years)") +
   coord_cartesian(ylim = ylims) +
   scale_color_manual(values = blues9[3:9]) +
@@ -324,7 +364,35 @@ p1 + p2
 
 <br><br>
 
-Figure 2 shows the smooth GAM estimates, along with 95% credible/confidence intervals (which include the uncertainty about the overall mean as well as the centred smooth itself). In each row the older cohort is shown in the left column as the reference smooth, and the estimated difference between the reference and the younger cohort is shown in the right column as the difference smooth.
+##### Table 3. Average pairwise difference in mental health between cohorts  
+
+```{r mean_difference_table}
+hilda.data %>% 
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  group_by(cohort, xwaveid) %>%
+  summarise(
+    mhi5 = mean(ghmh, na.rm=T),
+    .groups = "drop") %>%
+  aov(mhi5 ~ cohort, .) %>%
+  TukeyHSD(.) %>%
+  broom::tidy() %>%
+  select(contrast:adj.p.value, -null.value) %>%
+  filter(
+    contrast %in% 
+      c("1950s-1940s", "1960s-1950s", "1970s-1960s", "1980s-1970s", "1990s-1980s")) %>%
+  mutate(across(where(is.double), ~round(., 3))) %>%
+  flextable() %>%
+  fontsize(size = 9, part = "all") %>%
+  autofit()
+```
+
+<br>
+
+Significant pairwise differences between each cohort and the reference cohort occur (*ps* < .05), except for the 1950s vs 1940s comparison (*p* = .127). These results represent mean differences in MHI-5 scores of each cohort (after accounting for variation in the trends over age within each cohort). However the comparisons necessarily confound the effect of age and cohort, and to control for age we present comparisons of the estimated smooth trends over the same age ranges below.  
+
+
+
+Figure 2 shows the smooth GAM estimates, along with 95% credible/confidence intervals (which include the uncertainty about the overall mean as well as the centred smooth itself). In each row the older cohort is shown in the left column as the reference smooth, and the estimated difference between the reference and the younger cohort is shown in the right column as the difference smooth. 
 
 ##### Figure 2. Centered estimates of cohort trajectories (left) and their differences (right)
 
@@ -349,7 +417,7 @@ plot.data <- map2(.x = gam.list, .y = names(gam.list), .f = ~{
 }) 
 ```
 
-```{r figure_2, fig.dim=c(4, 8)}
+```{r figure_2, fig.dim=c(4, 8), out.height="50%", out.width="50%"}
 difference_plot <- function(.df) {
   ggplot(.df, aes(x = x, y = fit)) +
     geom_hline(aes(yintercept=0), size = 0.1) + 
@@ -357,7 +425,7 @@ difference_plot <- function(.df) {
                 fill = "grey80") +
     geom_line() +
     facet_wrap(~cohort) +
-    labs(x = "Age (years)", y = "MHi-5 units") +
+    labs(x = "Age (years)", y = "MHI-5 units") +
     theme_minimal(base_size = 9) +
     theme(panel.grid = element_blank(),
           axis.title = element_text(size = 7))
@@ -374,11 +442,11 @@ p1 / p2 / p3 / p4 / p5
 
 <br>
 
-The difference smooths (right panels) reveal where the younger cohort is significantly different from the older reference cohort (left panels), that is, where the confidence bounds exclude zero (horizontal line) [@marra2012coverage; @wood2013p]. Inspection of the 1990s difference panel reveals the youngest cohort's mental health trajectory is significantly declining with age relative to the 1980s cohort. After the age of 25, a person born in the 1990s is expected to have lower mental health than an equivalently aged person born earlier (e.g., 1980s). The other cohorts are also declining relative to their older reference cohort, albeit not as substantial a decline and not as reliably below zero as the 1990s difference smooth.  
+The trend in the centered difference smooths (right panels) reveals whether the _change_ in MHI-5 scores of the younger cohort is significantly different from the older reference cohort (left panels) over the same age range, i.e., a cohort effect. For example a significant negative trend in the right panel, as indicated by 95% confidence/credible intervals which exclude zero (horizonal line) in opposite directions at each endpoint, demonstrates MHI-5 scores are declining in the younger cohort at a faster rate than the reference cohort. However a negative trend in the right panel does not by itself indicate whether average MHI-5 scores are deteriorating in that cohort. Inspection of the reference cohort in the left panel is necessary to determine whether the decline represents a true deterioration in mental health. For example, the 1990s difference panel reveals the youngest cohort's mental health trajectory is significantly declining with age relative to the 1980s cohort, and the 1980s smooth (reference in the right panel) is also significantly deteriorating relative to its own mean baseline. Together this represents evidence that MHI-5 scores in the 1990s cohort are declining faster than the deteriorating mental health of the 1980s cohort. Compare to the 1960s difference smooth in the right panel, where there is also a significant negative trend however the trend in the 1950s reference smooth (left panel) is positive, so the negative difference in the right panel is not due to changes in the 1960s cohort but rather improvements in the 1950s cohort. In general, no cohort shows a steeper decline relative to its reference than the 1990s cohort, and when cohorts older than 1990s tend to decline relative to their older reference cohort (right panels) it is not due to a deterioration relative to their own mean baseline (left panels).   
 
-Statistical differences based on Nychka (1988) are shown below:
+The statistical significance of the smooth differences indicates where the trend in differences between cohorts are non-zero (i.e., positive or negative). As such they reveal the presence of cohort-effects adjusted for age. P-values based on Nychka (1988) are shown below:  
 
-##### Table 3. Approximate significance of smooth differences  
+##### Table 4. Approximate significance of smooth differences  
 
 ```{r difference_table}
 map_dfr(gam.list, .f = broom::tidy, .id = "model") %>%
@@ -388,11 +456,12 @@ map_dfr(gam.list, .f = broom::tidy, .id = "model") %>%
             .id = "model"),
     by = c("model", "term", "edf")
   ) %>%
-  select(term, `k-index`, edf, statistic, p.value) %>%
+  select(term, `k-index`, edf, F.value = statistic, p.value) %>%
   filter(str_detect(term, "ocohort")) %>%
   mutate(term = str_remove(term, "s\\(age\\):ocohort"),
          term = paste(term, "difference")) %>%
-  mutate(across(`k-index`:statistic, ~round(., 2))) %>%
+  mutate(across(`k-index`:F.value, ~round(., 2))) %>%
+  mutate(p.value = round(p.value, 3)) %>%
   flextable() %>%
   fontsize(size = 9, part = "all") %>%
   autofit()
@@ -400,7 +469,7 @@ map_dfr(gam.list, .f = broom::tidy, .id = "model") %>%
 
 <br>
 
-The p-values indicate that nonlinear (i.e., smooth) differences exist between each of the younger cohorts and the next oldest cohort, with the exception of the 1950s cohort difference from 1940s.   
+The p-values indicate that cohort effects exist between each of the younger cohorts and the next oldest cohort, with the exception of the 1950s cohort difference from 1940s.    
 
 <br>
 
@@ -426,11 +495,11 @@ This study is intended as a starting point for more in-depth analysis or to invi
 
 ## Appendix
 
-The difference between male and female MHi-5 trajectories is mostly in the intercept (overall mean level). Men and women have similar trajectory differences between cohorts.
+The difference between male and female MHI-5 trajectories is mostly in the intercept (overall mean level). Men and women have similar trajectory differences between cohorts.
 
 ##### Figure A1. Interaction between sex and cohort
 
-```{r figure_A1, fig.dim=c(6,6)}
+```{r figure_A1, fig.dim=c(6, 6)}
 reds <- RColorBrewer::brewer.pal(6, "Reds")
 
 hilda.data %>%
@@ -444,7 +513,7 @@ hilda.data %>%
                 method = "gam", formula = y ~ s(x, bs = "cs"), 
                 se=F) +
     labs(
-      subtitle = "Smoothed MHi-5 scores (0-100)", 
+      subtitle = "Smoothed MHI-5 scores (0-100)", 
       y = "", x = "\n Age (years)") +
     scale_color_manual(values = c(reds, blues9[3:9])) +
     guides() +
@@ -473,7 +542,7 @@ hilda.data %>%
                 method = "gam", formula = y ~ s(x, bs = "cs"), 
                 se=F, alpha = 0.2) +
     labs(
-      subtitle = "Smoothed MHi-5 scores (0-100)", 
+      subtitle = "Smoothed MHI-5 scores (0-100)", 
       y = "", x = "\n Age (years)") +
     scale_color_manual(values = grey.colors(6, rev = T)) +
     theme_minimal() +
@@ -520,27 +589,27 @@ hilda.data %>%
 ```{r figure_A4, eval=F}
 layout(matrix(5:1, ncol = 1))
 
-read_rds("results/gam_90v80s.rds") %>% 
+read_rds("results/gam_90v80z.rds") %>% 
   .$lme %>%
   resid(type = "normalized") %>%
   pacf(lag.max = 12, main = "90sv80s")
 
-read_rds("results/gam_80v70s.rds") %>% 
+read_rds("results/gam_80v70z.rds") %>% 
   .$lme %>%
   resid(type = "normalized") %>%
   pacf(lag.max = 12, main = "80sv70s")
 
-read_rds("results/gam_70v60s.rds") %>% 
+read_rds("results/gam_70v60z.rds") %>% 
   .$lme %>%
   resid(type = "normalized") %>%
   pacf(lag.max = 12, main = "70sv60s")
 
-read_rds("results/gam_60v50s.rds") %>% 
+read_rds("results/gam_60v50z.rds") %>% 
   .$lme %>%
   resid(type = "normalized") %>%
   pacf(lag.max = 12, main = "60sv50s")
 
-read_rds("results/gam_50v40s.rds") %>% 
+read_rds("results/gam_50v40z.rds") %>% 
   .$lme %>%
   resid(type = "normalized") %>%
   pacf(lag.max = 12, main = "50sv40s")
