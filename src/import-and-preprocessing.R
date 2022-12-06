@@ -63,7 +63,7 @@ key_esbrd = c(`1` = "employed", `2` = "unemployed", `3` = "not in labour force")
 
 demographic_items <- gather_hilda(hilda, c(
   "hhda10",  # SEIFA 2001 Decile of socio-economic advantage (higher is better)
-  "hgage",   # age
+  "hhiage",  # age at interview
   "hgsex",   # sex (male = 1)
   "helth",   # long term health condition (yes = 1)
   "mrcurr",  # current marital status (married/de facto ≤ 2)
@@ -89,7 +89,7 @@ demographics <- demographic_items %>%
     wave,
     xwaveid,
     sex = if_else(hgsex == 1, "Male", "Female"),
-    age = as.numeric(hgage),
+    age = as.numeric(hhiage),
     employment = esbrd,
     student = if_else(edfts == 1 | age <= 17, TRUE, FALSE, missing = FALSE),
     edu = case_when( 
