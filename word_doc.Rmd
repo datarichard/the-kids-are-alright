@@ -83,17 +83,15 @@ Given the observed deterioration in mental health among Australians over the pas
 
 <br><br>
 
-In many countries there has been an increase in the prevalence of mental ill health, even prior to COVID, alongside increasing use of both psychotropics and therapeutic services [@peach2022mental]. For instance, the proportion of Australians reporting high or very high levels of psychological distress has increased year-on-year from 10.8% in 2011-12 to 15.4% in 2020-21 according to the ABS [@abs2022]. This rise in psychological distress was particularly prevalent among younger age groups, with 18-24 year olds reporting the largest increase from 11.8% in 2011-12 to 20.1% in 2020-21. These increases are also mirrored in large, longitudinal panel surveys such as the Household, Income and Labour Dynamics in Australia (HILDA) Survey [@butterworth2020trends], as well as the prevalence of recent mental disorders in focused population-based mental health surveys, where an increase from 13.4% in 2011-12 to 20.4% in 2020-21, including almost two in five people (39.6%) aged 16-24 has just been reported [@abs2022].
+In many countries there has been an increase in the prevalence of mental ill health, even prior to COVID, alongside increasing use of both psychotropics and therapeutic services [@peach2022mental]. For instance, the proportion of Australians reporting high or very high levels of psychological distress has increased year-on-year from 10.8% in 2011-12 to 15.4% in 2020-21 according to the ABS [@abs2022]. This rise in psychological distress was particularly prevalent among younger age groups, with 18-24 year olds reporting the largest increase from 11.8% in 2011-12 to 20.1% in 2020-21. These increases are also mirrored in large, longitudinal panel surveys such as the Household, Income and Labour Dynamics in Australia (HILDA) Survey [@butterworth2020trends], as well as the prevalence of recent mental disorders in focused population-based mental health surveys, where an increase from 13.4% in 2011-12 to 20.4% in 2020-21, including almost two in five people (39.6%) aged 16-24 has just been reported [@abs2022].  
 
 Other OECD countries have observed similar declines in population levels of mental health, including among young people in the UK, USA, Netherlands, and Japan [@twenge2019age; @ormel2022more; @hidaka2012depression; @nishi2018trends], though not all [e.g., Canada, @patten2016major]. In many cases these changes can be attributed to changing age structures as the national population grows (i.e., *age effects*) [@vos2016global; @ferrari2013burden; @baxter2014challenging], or due to periods of disruption such as the global financial crisis (GFC) or the COVID-19 pandemic and the loss of economic opportunity these entail (i.e., *period effects*) [@glozier2022happened; @butterworth2022lockdown].
 
-Age effects can influence the population-level trends when the age-structure of the population changes to include more age-groups with poorer mental health. Comparing age groups over the population has revealed a U-shaped pattern in affective wellbeing (similar to mental health) in large cross-sectional surveys, whereby hedonic aspects of wellbeing decline from young age-groups (e.g., 18-20) to middle-age (50-55) before increasing to a peak at 70-75, although there are cultural and national differences [@stone2010snapshot; @steptoe2015subjective]. In Australia, @burns2020age described the cross-sectional differences in the mental health of Australian adults using 17 years of HILDA data (2001-2017). Using the mental health inventory (MHI-5), they report only very small differences in mental health over age-groups, however there was an emerging downward trend for the youngest (18-24) and very oldest adults (75+) in the more recent years. A cohort trajectory analysis indicated there is an improvement in mental health as people age before a substantial decline after 75 years of age, but little evidence of any cohort-specific effects.
+Age effects can influence the population-level trends when the age-structure of the population changes to include more age-groups with poorer mental health. Comparing age groups over the population has revealed a U-shaped pattern in mental wellbeing in large cross-sectional surveys, whereby hedonic aspects of wellbeing decline from young age-groups (e.g., 18-20) to middle-age (50-55) before increasing to a peak at 70-75, although there are cultural and national differences [@stone2010snapshot; @steptoe2015subjective]. In Australia, @burns2020age described age-related changes in the mental health of Australian adults using 17 years of HILDA data (2001-2017). Using the mental health inventory (MHI-5), they report only very small differences in mental health over age-groups, however there was an emerging downward trend for the youngest (18-24) and very oldest adults (75+) in the more recent years. @butterworth2020trends has found deteriorating trends in mental health in Australia. Also using HILDA data, @butterworth2020trends found an increase in psychological distress (K10 scores) from 4.8% to 7.4% between 2007 to 2017, but only among 18-34 and 35-64 age groups in this representative longitudinal sample.   
 
-Period effects refer to variance over time that is common across all age groups, such as due to the COVID-19 pandemic that started in 2020. For example in Australia, lockdowns during COVID-19 significantly reduced the mental health of women with children in 2020 [@butterworth2022lockdown; @schurer2022zero]. However, the pandemic cannot explain the deteriorating longitudinal trends in mental health observed before 2020 in Australia. Also using HILDA data, @butterworth2020trends found an increase in psychological distress (K10 scores) from 4.8% to 7.4% between 2007 to 2017, but only among 18-34 and 35-64 age groups in a representative longitudinal sample. The GFC in 2008 may represent a period effect responsible for such a decline, as it appears restricted to working-aged people who may be more adversely impacted by wide-spread changes in economic conditions.
+Apart from age-related changes, which may reflect normal but temporary developmental changes in mental health over the life-span, mental health may also vary by birth cohort. Cohort effects refer to variance over time that is specific to individuals born in or around certain years (i.e., generational differences between “millenials” and “baby boomers”). Cohort differences in mental health are not likely to be temporary as they are associated with the person-specific differences which persist over the age-range. Moreover because of the linear dependency between age-, cohort-, and period-effects [@bell2020age; @fienberg1978identification; @kratz2021age], correctly disentangling age-related effects from cohort effects in mental health is fraught, but crucial if we are to identify the groups most at risk. There is no technical way to solve the dependency and identify the unique effect of each in a linear model [@fienberg1978identification; @luo2013assessing; @holford1983estimation]. Adding covariates changes the model but not the identification problem. The only way to solve this issue is by fiat; that is by conceding some constraint whose appropriateness cannot be tested [@fienberg2013cohort; @fienberg1985specification; @mason1985cohort], or by focusing on nonlinear effects and possibly some interactions [@bell2020age].  
 
-Because mental health changes over time and with age for various reasons (broadly distinguished so far as age- or period- effects), accurately locating the source of any such varying trend is critical before targeted interventions can be effective. The evidence reviewed so far indicates trends in mental health may exist, yet comparisons between cross-sectional and longitudinal studies reveal inconsistencies [e.g., @butterworth2020trends].
-
-In this paper, we aim to distinguish whether the widely-observed decline in mental health in Australia is due to variation with age, or common effects of the recent period, or differences between birth cohorts. To identify any recent period effect, we explicitly model mental health (MHI-5 scores) for each age-group as a nonlinear smooth function of time. To identify cohort effects from age effects, we explicitly model mental health for each birth cohort as a nonlinear smooth function of age. Comparisons between smooths allow us to determine where any differences between age-groups or cohorts occurred.
+In this paper, we aim to distinguish whether the widely-observed decline in mental health in Australia is due to variation with age, or differences between birth cohorts. To remove the linear dependency and identify any differences in trends between cohorts, we model mental health (MHI-5 scores) for each cohort as a nonlinear smooth function of age. Comparisons between smooths allows us to determine whether the average level of mental health differs between cohorts (controlling for age), and whether the _trajectory_ of mental health (over age) differs between cohorts.  
 
 ## Methods  
 
@@ -170,11 +168,13 @@ $\ \ \ \ y_{it} = \beta_{k}(cohort_i) + f(age_{it}) + f_{[k]} (age_{it}) + \zeta
 
 $\ \ \ \ \epsilon_i \sim N(0, \phi \sigma^2)$
 
-Where $y_{it}$ is the MHI-5 score for each person $i$ over age $t$; $\beta_{[k]}$ is the mean MHI-5 estimate for each $k = 1...6$ birth cohort, after accounting for variations in trend over age; and $f_{[k]}$ are smooth functions for the trend in MHI-5 scores over age for each cohort. The smooth trends wre centered for identifiability reasons [@marra2012coverage; @wood2013p], however the resulting model estimation allowed two important comparisons: Firstly the mean MHI-5 estimates ($\beta_{[k]}$) provided comparisons for the average difference in mental health between cohorts. However interpreting these differences is difficult in the presence of trends over age in each cohort. For example, a mean difference could be due to a decreasing trend with age in one cohort or an increasing trend in the other cohort, rather than consistent differences in mental health over the age range. Thus to identify differences in trends between cohorts, we estimated _difference smooths_ between the centered $f_{[k]}$ smooth functions. The resulting difference smooths are also centered around zero and so mean differences in mental health are not accounted for by the smooths, but they will  reveal whether mental health is changing with age in one cohort relative to the other (aka reference) cohort. The difference smooths also directly estimate the uncertainty around the difference, with confidence intervals that include the uncertainty about the mean difference as well as the centered smooth itself. This results in intervals with close to nominal (frequentist) coverage probabilities [@marra2012coverage].   
+Where $y_{it}$ is the MHI-5 score for each person $i$ over age $t$; $\beta_{[k]}$ is the mean MHI-5 estimate for each $k = 1...6$ birth cohort, after accounting for variations in trend over age; and $f_{[k]}$ are smooth functions for the trend in MHI-5 scores over age for each cohort.  
+
+The smooth trends were centered for identifiability reasons [@marra2012coverage; @wood2013p], however the resulting model estimation allowed two important comparisons: Firstly the mean MHI-5 estimates ($\beta_{[k]}$) provided comparisons for the average difference in mental health between cohorts. However interpreting these differences is difficult in the presence of trends over age in each cohort. For example, a mean difference could be due to a decreasing trend with age in one cohort or an increasing trend in the other cohort, rather than consistent differences in mental health over the age range. Thus an important advantage provided by the current model are the centered $f_{[k]}$ smooth functions from which differences in trends between cohorts are directly estimated. The resulting difference smooths are also centered around zero and so mean differences in mental health are not accounted for by these smooths, but they will reveal whether mental health is changing with age in one cohort relative to the other cohort (aka _reference_ cohort). The difference smooths also directly estimate the uncertainty around the difference, with confidence intervals that include the uncertainty about the mean difference as well as the centered smooth itself. This results in intervals with close to nominal (frequentist) coverage probabilities [@marra2012coverage].   
 
 We did not compare cohorts more than a decade apart since there are few or no overlapping age groups observed, so we restricted ourselves to the five ($K-1$) pairwise comparisons between each cohort and the next oldest cohort (i.e., the *reference* cohort).  
 
-To account for the person-level dependency when survey participants are measured more than once, we included a first-order autoregressive AR(1) term $\phi$ for the residuals based on the unique crosswave ID for each person $i = 1...I$, which is equivalent to including the person-level random intercept $\zeta_i$ nested within cohort. In sensitivity analyses we included dummies for sex, and first interview, a linear period term, [anything else needed here???](), with the results presented in the appendix.  
+To account for the person-level dependency when survey participants are measured more than once, we included a first-order autoregressive AR(1) term $\phi$ for the residuals based on the unique crosswave ID for each person $i = 1...I$, which is equivalent to including the person-level random intercept $\zeta_i$ nested within cohort. In sensitivity analyses we explored the influence of period effects, sex, and first interview, as well as comparisons with psychological distress. The results are presented in the appendix.  
 
   
 
@@ -484,7 +484,7 @@ In addition to the main analysis, we conducted several sensitivity tests, the re
 
 ## Discussion
 
-Population levels of mental health in Australia have been declining over the past decade or so. This is especially the case for younger adults aged between 15 and 35. Although there has been consistent debate about the possible drivers of these declining mental health trajectories (Skinner et al., 2022), little work has been done to try and identify more precisely the source of these patterns. Moreover because of the linear dependency between age-, cohort-, and period-effects [@bell2020age; @fienberg1978identification; @kratz2021age], correctly disentangling such effects are crucial if we are to identify the groups most at risk. There is no technical way to solve the dependency and identify the unique effect of each in a linear model [@fienberg1978identification; @luo2013assessing; @holford1983estimation]. Adding covariates changes the model but not the identification problem. The only way to solve this issue is by fiat; that is by conceding some constraint whose appropriateness cannot be tested [@fienberg2013cohort; @fienberg1985specification; @mason1985cohort], or by focusing on nonlinear effects and possibly some interactions [@bell2020age].  
+Population levels of mental health in Australia have been declining over the past decade or so. This is especially the case for younger adults aged between 15 and 35. Although there has been consistent debate about the possible drivers of these declining mental health trajectories (Skinner et al., 2022), little work has been done to try and identify more precisely the source of these patterns.  
 
 Using 20 years of longitudinal data we modelled the changes to mental health over age in Australia in a flexible non-linear model. Our model allowed us to compare mental health between cohorts, adjusted for age, and find that the observed deterioration in mental health in Australia is most consistent with a cohort effect rather than a (temporary) age-effect. Importantly, it is the youngest cohorts and especially 1990s birth cohort that is experiencing a decreasing trajectory of mental health over time. Individuals in this cohort report worse mental health than older cohorts at the same ages, and because our model allowed us to project/predict future trajectories on the basis of the current trajectory, we can expect this decline in the youngest generations to continue. Thus, the deterioration in mental health over time which has been reported in large cross-sectional surveys, is likely due to cohort-specific effects, related to the experience of young people born in the Millenial generation and may be unlikely to spontaneously resolve. These findings are similar for men and women, and the results are robust to alternative samples and measures used.
 
@@ -500,64 +500,158 @@ This study is intended as a starting point for more in-depth analysis or to invi
 
 ## Appendix
 
-The difference between male and female MHI-5 trajectories is mostly in the intercept (overall mean level). Men and women have similar trajectory differences between cohorts.
+#### Period effects  
 
-##### Figure A1. Interaction between sex and cohort
+Period effects refer to variance over time that is common across all age groups and cohorts, due to population-wide events such as the Global Financial Crisis (GFC) in 2008 or the COVID-19 pandemic that started in 2020. We estimated the nonlinear effect of period over the complete set of survey years (2000 to 2020) as a smooth term in a model with cohort and (smooth) age effects.  
 
-```{r figure_A1, fig.dim=c(6, 6)}
-reds <- RColorBrewer::brewer.pal(6, "Reds")
+The centered smooth effect of period (after accounting for nonlinear age and cohort effects) is shown below.  
 
-hilda.data %>%
-  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
-  ggplot(aes(x = age, y = ghmh)) +
-    geom_smooth(aes(group = sex),
-                method = "gam", formula = y ~ s(x, bs = "cs"),
-                se=F, color = "black", size = .5, linetype = "dashed") +
-    geom_smooth(aes(group = interaction(cohort,sex), 
-                    color = interaction(cohort,sex)), 
-                method = "gam", formula = y ~ s(x, bs = "cs"), 
-                se=F) +
-    labs(
-      subtitle = "Smoothed MHI-5 scores (0-100)", 
-      y = "", x = "\n Age (years)") +
-    scale_color_manual(values = c(reds, blues9[3:9])) +
-    guides() +
-    theme_minimal() +
-    theme(plot.title = element_text(face = "bold"),
-          legend.title = element_text(size = 10),
-          legend.position = c(0.85, 0.3),
-          axis.title.x = element_text(size = 10))
+```{r load_fullfit, include=F}
+fit <- read_rds("results/full_fit_w_period.rds")
+
+plot_obj <- plot(fit, seWithMean = T)
+```
+
+##### Figure A1. Smoothed effect of period  
+```{r figure_A1}
+as_tibble(plot_obj[[7]][c("x", "se", "fit")]) %>%
+  ggplot(aes(x = x)) +
+    geom_hline(aes(yintercept=0), size = 0.1) + 
+    geom_ribbon(aes(ymin = fit - se, ymax = fit + se, y = NULL),
+                fill = "grey80") +
+    geom_line(aes(y = fit)) +
+    labs(x = "Survey year", y = "centered MHI-5 score") +
+    theme_minimal(base_size = 9) +
+    theme(panel.grid = element_blank(),
+          axis.title = element_text(size = 7))
 ```
 
 <br>
 
-Excluding the Wave 11 top-up sample does not appear to greatly impact the cohort trajectories.
+The results confirmed there was a slow decline in average MHI-5 scores over the survey period, which we have already seen is not equally shared by all age-groups or cohorts (e.g,. Figure 1).  
 
-##### Figure A2. Excluding top-up sample
+After including a smooth term for period we estimated the smooth trajectory of mental health for each cohort, and in a post-estimation procedure calculated the difference between cohort smooths in a pairwise fashion. In contrast to the results reported in Figure 2, these difference smooths are not directly estimated and so while each comparison includes overlapping ages, age is not matched exactly in each pairwise comparison (up to ±5 years lag may be present). Nevertheless the pattern of differences supports the same inferences drawn from Figure 2, and demonstrates that period effects are not an influential presence in the cohort differences we report here.  
 
-```{r figure_A2, fig.dim=c(6,6)}
-hilda.data %>%
-  filter(!topup) %>%
-  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
-  ggplot(aes(x = age, y = ghmh)) +
-    geom_smooth(aes(group = 1), 
-                method = "gam", formula = y ~ s(x, bs = "cs"), 
-                se=F, color = "black", size = .5, linetype = "dashed") +
-    geom_smooth(aes(group = cohort, color = cohort), 
-                method = "gam", formula = y ~ s(x, bs = "cs"), 
-                se=F, alpha = 0.2) +
-    labs(
-      subtitle = "Smoothed MHI-5 scores (0-100)", 
-      y = "", x = "\n Age (years)") +
-    scale_color_manual(values = grey.colors(6, rev = T)) +
-    theme_minimal() +
-    theme(plot.title = element_text(face = "bold"),
-          legend.title = element_text(size = 10),
-          legend.position = c(0.9, 0.2),
-          axis.title.x = element_text(size = 10))
+##### Figure A2. Cohort trajectories (left) and their differences to the subsequent cohort (right)
+```{r prep_A2, include=F}
+func1 <- function(x) round(seq(min(x), max(x), 1))
+func2 <- function(x) round(seq(min(x), max(x), 2))
+
+reference_plots <- bind_rows(
+  as.data.frame(plot_obj[[1]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1940s smooth",
+           age = x + 65,
+           fit = fit + 76.6,
+           y = if_else(age < 52 | age > 80, NA_real_, fit)),
+  as.data.frame(plot_obj[[2]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1950s smooth",
+           age = x + 56,
+           fit = fit + 74.7,
+           y = if_else(age < 42 | age > 70, NA_real_, fit)),
+  as.data.frame(plot_obj[[3]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1960s smooth",
+           age = x + 46,
+           fit = fit + 73.3,
+           y = if_else(age < 32 | age > 60, NA_real_, fit)),
+  as.data.frame(plot_obj[[4]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1970s smooth",
+           age = x + 37,
+           fit = fit + 72.9,
+           y = if_else(age < 22 | age > 50, NA_real_, fit)),
+  as.data.frame(plot_obj[[5]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1980s smooth",
+           age = x + 27,
+           fit = fit + 72.2,
+           y = if_else(age < 15 | age > 40, NA_real_, fit))
+) %>%
+  mutate(cohort = fct_rev(cohort))
+
+
+
+p1 <- ggplot(reference_plots, aes(x = age)) +
+  geom_ribbon(aes(ymin = fit - se, ymax = fit + se, y = NULL),
+              fill = "grey80") +
+  geom_line(aes(y = y)) +
+  scale_y_continuous(breaks = func2) +
+  facet_wrap(~cohort, ncol = 1, scales ="free") +
+  labs(x = "Age (years)", y = "MHI-5 score") +
+  theme_minimal(base_size = 9) +
+  theme(panel.grid = element_blank(),
+        axis.title = element_text(size = 7))
+
+#### difference plots ####
+smooth_diff <- function(model, f1, f2, var, alpha = 0.05,
+                        unconditional = TRUE) {
+  
+  pdat <- expand.grid(
+    age = -10:10,
+    fcohort = as.factor(c(f1, f2)),
+    year = 2001:2020)
+  
+  xp <- predict(model, newdata = pdat, type = 'lpmatrix')
+  c1 <- grepl(f1, colnames(xp))
+  c2 <- grepl(f2, colnames(xp))
+  r1 <- pdat[[var]] == f1
+  r2 <- pdat[[var]] == f2
+  ## difference rows of xp for data from comparison
+  X <- xp[r1, ] - xp[r2, ]
+  ## zero out cols of X related to splines for other lochs
+  X[, ! (c1 | c2)] <- 0
+  ## zero out the parametric cols
+  X[, !grepl('^s\\(', colnames(xp))] <- 0
+  dif <- X %*% coef(model)
+  se <- sqrt(rowSums((X %*% vcov(model, unconditional = unconditional)) * X))
+  crit <- qt(alpha/2, df.residual(model), lower.tail = FALSE)
+  upr <- dif + (crit * se)
+  lwr <- dif - (crit * se)
+  data.frame(pair = paste(f1, f2, sep = '-'),
+             age = -10:10,
+             diff = dif,
+             se = se,
+             upper = upr,
+             lower = lwr)
+}
+
+
+difference_plots <- bind_rows(
+  smooth_diff(fit, '1990s', '1980s', 'fcohort') %>%
+    mutate(age = age + 24,
+           diff = if_else(age < 15 | age > 30, NA_real_, diff)),
+  smooth_diff(fit, '1980s', '1970s', 'fcohort') %>%
+    mutate(age = age + 27,
+           diff = if_else(age < 15 | age > 40, NA_real_, diff)),
+  smooth_diff(fit, '1970s', '1960s', 'fcohort') %>%
+    mutate(age = age + 37,
+           diff = if_else(age < 22 | age > 50, NA_real_, diff)),
+  smooth_diff(fit, '1960s', '1950s', 'fcohort') %>%
+    mutate(age = age + 46,
+           diff = if_else(age < 32 | age > 60, NA_real_, diff)),
+  smooth_diff(fit, '1950s', '1940s', 'fcohort') %>%
+    mutate(age = age + 56,
+           diff = if_else(age < 42 | age > 70, NA_real_, diff))
+) %>%
+  mutate(pair = fct_rev(pair))
+
+
+p2 <- ggplot(difference_plots, aes(x = age, y = diff, group = pair)) +
+    geom_hline(aes(yintercept=0), size = 0.1) + 
+    geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2) +
+    geom_line() +
+    scale_y_continuous(breaks = func2) +
+    facet_wrap(~ pair, ncol = 1, scales = "free") +
+    labs(x = NULL, y = NULL) +
+    theme_minimal(base_size = 9) +
+    theme(panel.grid = element_blank(),
+          axis.title = element_text(size = 7))
 ```
 
-<br>
+```{r figure_A2, warning=F, fig.dim=c(4, 8), out.height="50%", out.width="50%"}
+p1 + p2
+```
+
+<br><br>
+
+#### Psychological distress  
 
 K10 scores (psychological distress) were collected in alternate years from 2007 to 2019. The corresponding trajectories for each cohort are shown below. Psychological distress was higher for younger cohorts than older cohorts at the same age.
 
@@ -587,11 +681,75 @@ hilda.data %>%
 
 <br>
 
-##### Figure A4. Correlated error structure
+
+
+#### Other sensitivity checks  
+
+The difference between male and female MHI-5 trajectories is mostly in the intercept (overall mean level). Men and women have similar trajectory differences between cohorts.
+
+##### Figure A4. Interaction between sex and cohort
+
+```{r figure_A4, fig.dim=c(6, 6)}
+reds <- RColorBrewer::brewer.pal(6, "Reds")
+
+hilda.data %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  ggplot(aes(x = age, y = ghmh)) +
+    geom_smooth(aes(group = sex),
+                method = "gam", formula = y ~ s(x, bs = "cs"),
+                se=F, color = "black", size = .5, linetype = "dashed") +
+    geom_smooth(aes(group = interaction(cohort,sex), 
+                    color = interaction(cohort,sex)), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F) +
+    labs(
+      subtitle = "Smoothed MHI-5 scores (0-100)", 
+      y = "", x = "\n Age (years)") +
+    scale_color_manual(values = c(reds, blues9[3:9])) +
+    guides() +
+    theme_minimal() +
+    theme(plot.title = element_text(face = "bold"),
+          legend.title = element_text(size = 10),
+          legend.position = c(0.85, 0.3),
+          axis.title.x = element_text(size = 10))
+```
+
+<br>
+
+Excluding the Wave 11 top-up sample does not appear to greatly impact the cohort trajectories.
+
+##### Figure A5. Excluding top-up sample
+
+```{r figure_A5, fig.dim=c(6,6)}
+hilda.data %>%
+  filter(!topup) %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  ggplot(aes(x = age, y = ghmh)) +
+    geom_smooth(aes(group = 1), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, color = "black", size = .5, linetype = "dashed") +
+    geom_smooth(aes(group = cohort, color = cohort), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, alpha = 0.2) +
+    labs(
+      subtitle = "Smoothed MHI-5 scores (0-100)", 
+      y = "", x = "\n Age (years)") +
+    scale_color_manual(values = grey.colors(6, rev = T)) +
+    theme_minimal() +
+    theme(plot.title = element_text(face = "bold"),
+          legend.title = element_text(size = 10),
+          legend.position = c(0.9, 0.2),
+          axis.title.x = element_text(size = 10))
+```
+
+<br>
+
+
+##### Figure A6. Correlated error structure
 
 (not run)
 
-```{r figure_A4, eval=F}
+```{r figure_A6, eval=F}
 layout(matrix(5:1, ncol = 1))
 
 read_rds("results/gam_90v80z.rds") %>% 
