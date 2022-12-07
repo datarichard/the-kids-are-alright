@@ -414,11 +414,11 @@ for age. P-values based on Nychka (1988) are shown below.
 
 | term             | k-index |  edf | F.value | p.value |
 |:-----------------|--------:|-----:|--------:|--------:|
-| 1990s difference |    1.00 | 1.00 |   60.24 |   0.000 |
+| 1990s difference |    0.98 | 1.00 |   60.24 |   0.000 |
 | 1980s difference |    1.01 | 4.37 |    8.55 |   0.000 |
-| 1970s difference |    1.00 | 3.30 |    6.21 |   0.000 |
+| 1970s difference |    0.96 | 3.30 |    6.21 |   0.000 |
 | 1960s difference |    0.98 | 1.00 |    3.27 |   0.071 |
-| 1950s difference |    0.99 | 1.00 |    0.15 |   0.698 |
+| 1950s difference |    1.01 | 1.00 |    0.15 |   0.698 |
 
 <br>
 
@@ -553,7 +553,7 @@ and cohort effects) is shown below.
 
 ##### Figure A1. Smoothed effect of period
 
-<img src="figures/figure_A1-1.png" width="50%" />
+![](figures/figure_A1-1.png)<!-- -->
 
 <br>
 
@@ -574,7 +574,7 @@ presence in the cohort differences we report here.
 
 ##### Figure A2. Cohort trajectories (left) and their differences to the subsequent cohort (right)
 
-<img src="figures/figure_A2-1.png" width="50%" height="50%" />
+![](figures/figure_A2-1.png)<!-- -->
 
 <br><br>
 
@@ -587,7 +587,7 @@ older cohorts at the same age.
 
 ##### Figure A3. Psychological distress (K10 scores)
 
-<img src="figures/figure_A3-1.png" width="66%" />
+![](figures/figure_A3-1.png)<!-- -->
 
 <br><br>
 
@@ -619,7 +619,7 @@ trajectory differences between cohorts.
 
 ##### Figure A5. Interaction between sex and cohort
 
-<img src="figures/figure_A5-1.png" width="75%" />
+![](figures/figure_A5-1.png)<!-- -->
 
 <br><br>
 
@@ -628,7 +628,7 @@ the cohort trajectories.
 
 ##### Figure A6. Excluding top-up sample
 
-<img src="figures/figure_A6-1.png" width="66%" />
+![](figures/figure_A6-1.png)<!-- -->
 
 <br><br>
 
@@ -639,7 +639,7 @@ demand characteristics to be low.
 
 ##### Figure A7. Excluding first survey
 
-<img src="figures/figure_A7-1.png" width="66%" />
+![](figures/figure_A7-1.png)<!-- -->
 
 <br><br>
 

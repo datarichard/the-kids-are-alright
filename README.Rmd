@@ -488,7 +488,7 @@ plot_obj <- plot(fit, seWithMean = T)
 ```
 
 ##### Figure A1. Smoothed effect of period  
-```{r figure_A1, fig.dim=c(5, 5), out.width="50%"}
+```{r figure_A1, fig.dim=c(5, 5)}
 as_tibble(plot_obj[[7]][c("x", "se", "fit")]) %>%
   ggplot(aes(x = x)) +
     geom_hline(aes(yintercept=0), size = 0.1) + 
@@ -619,7 +619,7 @@ p2 <- ggplot(difference_plots, aes(x = age, y = diff, group = pair)) +
           axis.title = element_text(size = 7))
 ```
 
-```{r figure_A2, warning=F, fig.dim=c(4, 8), out.height="50%", out.width="50%"}
+```{r figure_A2, warning=F, fig.dim=c(4, 8)}
 p1 + p2
 ```
 
@@ -631,7 +631,7 @@ K10 scores (psychological distress) were collected in alternate years from 2007 
 
 ##### Figure A3. Psychological distress (K10 scores)
 
-```{r figure_A3, warning=F, fig.dim=c(6,6), out.width="66%"}
+```{r figure_A3, warning=F, fig.dim=c(6,6)}
 hilda.data %>%
   filter(!topup) %>%
   filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
@@ -717,7 +717,7 @@ The difference between male and female MHI-5 trajectories is mostly in the inter
 
 ##### Figure A5. Interaction between sex and cohort
 
-```{r figure_A5, fig.dim=c(6, 6), out.width="75%"}
+```{r figure_A5, fig.dim=c(6, 6)}
 reds <- RColorBrewer::brewer.pal(6, "Reds")
 
 hilda.data %>%
@@ -748,7 +748,7 @@ Excluding the Wave 11 top-up sample does not appear to greatly impact the cohort
 
 ##### Figure A6. Excluding top-up sample
 
-```{r figure_A6, fig.dim=c(6,6), out.width="66%"}
+```{r figure_A6, fig.dim=c(6,6)}
 hilda.data %>%
   filter(!topup) %>%
   filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
@@ -775,7 +775,7 @@ hilda.data %>%
 Excluding the first survey due to social demand characteristics of the interview process. Note the SF-36 is part of the self-complete questionniare (SCQ) so no interviewer is present and we expect social demand characteristics to be low.  
 
 ##### Figure A7. Excluding first survey  
-```{r figure_A7, fig.dim=c(6,6), out.width="66%"}
+```{r figure_A7, fig.dim=c(6,6)}
 hilda.data %>%
   filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
   group_by(xwaveid) %>%
