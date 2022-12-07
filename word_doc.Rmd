@@ -24,15 +24,6 @@ library(gtsummary)
 library(flextable)
 
 `%notin%` <- Negate(`%in%`)
-
-# Use the correct age variable hhiage
-# Explain why there is gap in 65-74 in Figure 1 left panel
-# Explain the problem of interpreting a main effect in the presence of a signi-
-# ficant interaction. Start with a test of the (centered) mean difference and 
-# then move to the slope (i.e., interaction)
-# Add a sensitivity analysis excluding the first observation
-# Remove mention of affective wellbeing
-# Add a figure of MHI-5 < 52/64
 ```
 
 \ 
