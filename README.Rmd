@@ -258,7 +258,7 @@ hilda.data %>%
   )
 ```
 
-<img src="figures/table_1.png" alt="Table 1" style="height: 700px;"/>
+<img src="figures/table_1.png" alt="Table 1" style="height: 600px;"/>
 
 <br><br>
 
@@ -392,7 +392,7 @@ plot.data <- gam.list %>%
   }) 
 ```
 
-```{r figure_2, fig.dim=c(4, 8), out.height="50%", out.width="50%"}
+```{r figure_2, fig.dim=c(4, 8)}
 difference_plot <- function(.df) {
   ggplot(.df, aes(x = x, y = fit)) +
     geom_hline(aes(yintercept=0), size = 0.1) + 
