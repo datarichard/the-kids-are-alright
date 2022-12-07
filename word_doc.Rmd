@@ -166,7 +166,7 @@ Each smoother $f_k$ is represented by a sum of $K$ simpler, fixed basis function
 
 $\ \ \ \ y_{it} = \beta_{k}(cohort_i) + f(age_{it}) + f_{[k]} (age_{it}) + \zeta_{i} + \epsilon_{it}$
 
-$\ \ \ \ \epsilon_i \sim N(0, \phi \sigma^2)$
+$\ \ \ \ \epsilon_{it} \sim N(0, \phi \sigma^2)$
 
 Where $y_{it}$ is the MHI-5 score for each person $i$ over age $t$; $\beta_{[k]}$ is the mean MHI-5 estimate for each $k = 1...6$ birth cohort, after accounting for variations in trend over age; and $f_{[k]}$ are smooth functions for the trend in MHI-5 scores over age for each cohort.  
 
@@ -331,7 +331,7 @@ p1 <- ggplot(plot.data, aes(x = year, y = ghmh)) +
               method = "gam", formula = y ~ s(x, bs = "cs"), se=F) +
   labs(
     subtitle = paste("Smoothed MHI-5 scores 0-100 (by age group)"), 
-    y = "", x = "Survey year") +
+    y = "", x = "\n Survey year") +
   coord_cartesian(ylim = ylims) +
   scale_color_manual(values = rev(blues9)) +
   theme_minimal() +
@@ -502,7 +502,13 @@ This study is intended as a starting point for more in-depth analysis or to invi
 
 #### Period effects  
 
-Period effects refer to variance over time that is common across all age groups and cohorts, due to population-wide events such as the Global Financial Crisis (GFC) in 2008 or the COVID-19 pandemic that started in 2020. We estimated the nonlinear effect of period over the complete set of survey years (2000 to 2020) as a smooth term in a model with cohort and (smooth) age effects.  
+Period effects refer to variance over time that is common across all age groups and cohorts, due to population-wide events such as the Global Financial Crisis (GFC) in 2008 or the COVID-19 pandemic that started in 2020. We estimated the nonlinear effect of period over the complete set of survey years (2000 to 2020) as a smooth term in a model with cohort and (smooth) age effects:  
+
+$\ \ \ \ y_{it} = \beta_{k}(cohort_i) + f(age_{it}) + f_{[k]} (age_{it}) + f(year_t) + \zeta_{i} + \epsilon_{it}$
+
+$\ \ \ \ \epsilon_{it} \sim N(0,  \sigma^2)$  
+
+\  
 
 The centered smooth effect of period (after accounting for nonlinear age and cohort effects) is shown below.  
 
@@ -513,17 +519,16 @@ plot_obj <- plot(fit, seWithMean = T)
 ```
 
 ##### Figure A1. Smoothed effect of period  
-```{r figure_A1}
+```{r figure_A1, fig.dim=c(7, 5)}
 as_tibble(plot_obj[[7]][c("x", "se", "fit")]) %>%
   ggplot(aes(x = x)) +
     geom_hline(aes(yintercept=0), size = 0.1) + 
     geom_ribbon(aes(ymin = fit - se, ymax = fit + se, y = NULL),
                 fill = "grey80") +
     geom_line(aes(y = fit)) +
-    labs(x = "Survey year", y = "centered MHI-5 score") +
-    theme_minimal(base_size = 9) +
-    theme(panel.grid = element_blank(),
-          axis.title = element_text(size = 7))
+    labs(x = "\n Survey year", y = "centered MHI-5 score") +
+    theme_minimal() +
+    theme(panel.grid = element_blank())
 ```
 
 <br>
@@ -679,17 +684,71 @@ hilda.data %>%
           axis.title.x = element_text(size = 10))
 ```
 
+<br><br>
+
+#### Risk of mental illness  
+
+While the MHI-5 is not a diagnostic instrument, it has good psychometric properties when identifying DSM-V disorders in a community sample (AUC 0.877, Batterham, Sunderland, Slade, Calear, & Carragher, 2018). We used a cut-off value of 52 to identify people at risk of mental illness and estimated the prevalence of illness for each age-group and cohort.  
+
+##### Figure A4. Age and cohort effects on prevalence of mental illness risk
+```{r figure_A4, fig.dim=c(7,5)}
+ylims = c(0.05, 0.225)
+
+plot.data <- hilda.data %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  filter(age_group %notin% c("0-14", "75-84", "85+")) %>%
+  mutate(illness = as.numeric(ghmh < 52))
+
+p1 <- ggplot(plot.data, aes(x = year, y = illness)) +
+  geom_smooth(aes(group = age_group, color = age_group), 
+              method = "gam", formula = y ~ s(x, bs = "cs"), se=F) +
+  labs(
+    subtitle = paste("Prevalence of MHI-5 score < 52 by age group"), 
+    y = "", x = "\n Survey year") +
+  coord_cartesian(ylim = ylims) +
+  scale_color_manual(values = rev(blues9)) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10),
+        legend.position = c(0.25, 0.75),
+        axis.title.x = element_text(size = 10))
+
+
+
+p2 <- ggplot(plot.data, aes(x = age, y = illness)) +
+  geom_smooth(aes(group = 1), 
+              method = "gam", formula = y ~ s(x, bs = "cs"), 
+              se=F, color = "black", size = .5, linetype = "dashed") +
+  geom_smooth(aes(group = cohort, color = cohort), 
+              method = "gam", formula = y ~ s(x, bs = "cs"), 
+              se=F, alpha = 0.2) +
+  labs(
+    subtitle = "Prevalence of MHI-5 score < 52 by cohort",
+    y = "", x = "\n Age (years)") +
+  coord_cartesian(ylim = ylims) +
+  scale_color_manual(values = blues9[3:9]) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10),
+        legend.position = c(0.85, 0.75),
+        axis.title.x = element_text(size = 10))
+
+p1 + p2
+```
+
 <br>
 
+The prevalence of risk for mental illness varied between age-groups and cohorts in a similar pattern as psychological distress. Risk was higher for younger cohorts than older cohorts at the same age.  
 
+<br><br>
 
 #### Other sensitivity checks  
 
 The difference between male and female MHI-5 trajectories is mostly in the intercept (overall mean level). Men and women have similar trajectory differences between cohorts.
 
-##### Figure A4. Interaction between sex and cohort
+##### Figure A5. Interaction between sex and cohort
 
-```{r figure_A4, fig.dim=c(6, 6)}
+```{r figure_A5, fig.dim=c(6, 6)}
 reds <- RColorBrewer::brewer.pal(6, "Reds")
 
 hilda.data %>%
@@ -714,13 +773,13 @@ hilda.data %>%
           axis.title.x = element_text(size = 10))
 ```
 
-<br>
+<br><br>
 
 Excluding the Wave 11 top-up sample does not appear to greatly impact the cohort trajectories.
 
-##### Figure A5. Excluding top-up sample
+##### Figure A6. Excluding top-up sample
 
-```{r figure_A5, fig.dim=c(6,6)}
+```{r figure_A6, fig.dim=c(6,6)}
 hilda.data %>%
   filter(!topup) %>%
   filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
@@ -742,14 +801,44 @@ hilda.data %>%
           axis.title.x = element_text(size = 10))
 ```
 
-<br>
+<br><br>
+
+Excluding the first survey due to social demand characteristics of the interview process. Note the SF-36 is part of the self-complete questionniare (SCQ) so no interviewer is present and we expect social demand characteristics to be low.  
+
+##### Figure A7. Excluding first survey  
+```{r figure_A7, fig.dim=c(6,6)}
+hilda.data %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  group_by(xwaveid) %>%
+  mutate(first_interview = year == min(year)) %>% 
+  ungroup() %>%
+  filter(!first_interview) %>%
+  ggplot(aes(x = age, y = ghmh)) +
+    geom_smooth(aes(group = 1), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, color = "black", size = .5, linetype = "dashed") +
+    geom_smooth(aes(group = cohort, color = cohort), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, alpha = 0.2) +
+    labs(
+      subtitle = "Smoothed MHI-5 scores (0-100)", 
+      y = "", x = "\n Age (years)") +
+    scale_color_manual(values = grey.colors(6, rev = T)) +
+    theme_minimal() +
+    theme(plot.title = element_text(face = "bold"),
+          legend.title = element_text(size = 10),
+          legend.position = c(0.9, 0.2),
+          axis.title.x = element_text(size = 10))
+```
+
+<br><br>
 
 
-##### Figure A6. Correlated error structure
+##### Figure A8. Correlated error structure
 
 (not run)
 
-```{r figure_A6, eval=F}
+```{r figure_A8, eval=F}
 layout(matrix(5:1, ncol = 1))
 
 read_rds("results/gam_90v80z.rds") %>% 
