@@ -488,14 +488,14 @@ plot_obj <- plot(fit, seWithMean = T)
 ```
 
 ##### Figure A1. Smoothed effect of period  
-```{r figure_A1, fig.dim=c(5, 5)}
+```{r figure_A1, fig.dim=c(6, 5)}
 as_tibble(plot_obj[[7]][c("x", "se", "fit")]) %>%
   ggplot(aes(x = x)) +
     geom_hline(aes(yintercept=0), size = 0.1) + 
     geom_ribbon(aes(ymin = fit - se, ymax = fit + se, y = NULL),
                 fill = "grey80") +
     geom_line(aes(y = fit)) +
-    labs(x = "Survey year", y = "centered MHI-5 score") +
+    labs(x = "\n Survey year", y = "centered MHI-5 score") +
     theme_minimal() +
     theme(panel.grid = element_blank())
 ```
