@@ -414,11 +414,11 @@ for age. P-values based on Nychka (1988) are shown below.
 
 | term             | k-index |  edf | F.value | p.value |
 |:-----------------|--------:|-----:|--------:|--------:|
-| 1990s difference |    1.02 | 1.00 |   60.24 |   0.000 |
-| 1980s difference |    0.99 | 4.37 |    8.55 |   0.000 |
-| 1970s difference |    0.99 | 3.30 |    6.21 |   0.000 |
-| 1960s difference |    1.02 | 1.00 |    3.27 |   0.071 |
-| 1950s difference |    1.02 | 1.00 |    0.15 |   0.698 |
+| 1990s difference |    0.98 | 1.00 |   60.24 |   0.000 |
+| 1980s difference |    1.00 | 4.37 |    8.55 |   0.000 |
+| 1970s difference |    1.00 | 3.30 |    6.21 |   0.000 |
+| 1960s difference |    1.01 | 1.00 |    3.27 |   0.071 |
+| 1950s difference |    1.00 | 1.00 |    0.15 |   0.698 |
 
 <br>
 
