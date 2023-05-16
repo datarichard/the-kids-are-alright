@@ -1,0 +1,737 @@
+---
+title: |
+  ![](src/PNAS.png){width=4in}  
+  Supporting Information for
+output:
+   word_document:
+     reference_docx: src/Rmarkdown-for-PNAS.docx
+bibliography: src/references.bib
+csl: src/pnas.csl
+editor_options:
+  chunk_output_type: console
+always_allow_html: yes
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      fig.path = "figures/",
+                      dpi=300,
+                      ft.align="left")
+
+library(tidyverse)
+library(mgcv)
+library(ggeffects)
+library(emmeans)
+library(patchwork)
+library(gtsummary)
+library(flextable)
+library(officer)
+
+source("~/Documents/R/helpers.R")
+```
+
+# The kids are not alright: Differential trends in mental ill-health in Australia   
+
+**Ferdi Botha, Richard W Morris, Peter Butterworth, Nick Glozier**    
+
+
+<br>
+
+
+**Richard W. Morris**  
+**Email: richard.morris@sydney.edu.au**  
+
+<br>
+
+**This PDF file includes:**  
+
+- Supporting text
+- Figs. S1 to S5
+- Table S1
+- SI References  
+
+**Other supporting materials for this manuscript include the following:**  
+
+- Datasets S1  
+
+\newpage
+
+## Supporting Information Text  
+
+```{r import_data_superseded, eval=F}
+hilda.data <- read_rds("data/preprocessed.RDS") %>% 
+  select(xwaveid, year, sex, age, ghmh, pdk10s, topup) %>%
+  filter(!is.na(ghmh)) %>%
+  mutate(
+    age_group = case_when(
+      age <= 14 ~ "0-14",  # there is n = 1 fourteen year old
+      age <= 24 ~ "15-24", 
+      age <= 34 ~ "25-34",
+      age <= 44 ~ "35-44",
+      age <= 54 ~ "45-54",
+      age <= 65 ~ "55-64",
+      age <= 75 ~ "65-74",
+      age <= 85 ~ "75-84",
+      TRUE      ~ "85+"),
+    birthyear = year - age,
+    cohort = case_when(
+      birthyear %in% 1900:1929 ~ "1920s",
+      birthyear %in% 1930:1939 ~ "1930s", 
+      birthyear %in% 1940:1949 ~ "1940s",
+      birthyear %in% 1950:1959 ~ "1950s",
+      birthyear %in% 1960:1969 ~ "1960s",
+      birthyear %in% 1970:1979 ~ "1970s",
+      birthyear %in% 1980:1989 ~ "1980s",
+      birthyear %in% 1990:1999 ~ "1990s",
+      birthyear %in% 2000:2009 ~ "2000s", 
+      birthyear %in% 2010:2020 ~ "2010s", 
+      TRUE ~ "problem"
+    )) %>%
+  mutate(xwaveid = factor(xwaveid),
+         ocohort = ordered(cohort),
+         fcohort = factor(cohort))
+```
+
+```{r import_data}
+hilda.data <- read_rds("data/preprocessed.RDS") %>% 
+  select(xwaveid, year, sex, age, ghmh, pdk10s, topup) %>%
+  # filter(ghmh > 0) %>% # option for main analysis
+  mutate(
+    age_group = case_when(
+      age <= 14 ~ "0-14",  
+      age <= 24 ~ "15-24", 
+      age <= 34 ~ "25-34",
+      age <= 44 ~ "35-44",
+      age <= 54 ~ "45-54",
+      age <= 65 ~ "55-64",
+      age <= 75 ~ "65-74",
+      age <= 85 ~ "75-84",
+      TRUE      ~ "85+"),
+    birthyear = year - age,
+    cohort = case_when(
+      birthyear %in% 1900:1929 ~ "1920s",
+      birthyear %in% 1930:1939 ~ "1930s", 
+      birthyear %in% 1940:1949 ~ "1940s",
+      birthyear %in% 1950:1959 ~ "1950s",
+      birthyear %in% 1960:1969 ~ "1960s",
+      birthyear %in% 1970:1979 ~ "1970s",
+      birthyear %in% 1980:1989 ~ "1980s",
+      birthyear %in% 1990:1999 ~ "1990s",
+      birthyear %in% 2000:2009 ~ "2000s", 
+      birthyear %in% 2010:2020 ~ "2010s", 
+      TRUE ~ "problem"
+    )) %>%
+  mutate(xwaveid = factor(xwaveid),
+         ocohort = ordered(cohort),
+         fcohort = factor(cohort)) %>%
+  group_by(xwaveid) %>%
+  mutate(any_missing = any(ghmh < 0),
+         all_missing = all(ghmh < 0),
+         end_missing = last(ghmh < 0, order_by = year)) %>%
+  ungroup()
+```
+
+
+<br>
+
+### Period effects  
+
+Period effects refer to variance over time that is common across all age groups and cohorts, due to population-wide events such as the Global Financial Crisis (GFC) in 2008 or the COVID-19 pandemic that started in 2020. We estimated the nonlinear effect of period over the complete set of survey years (2000 to 2020) as a smooth term of year in a model with cohort and (smooth) age effects:  
+
+$$
+\begin{align*}
+    y_{it} &= \beta_{j}(cohort_i) + f(age_{it}) + f_{[j]} (age_{it}) + f(year_t) + \zeta_{i} + \epsilon_{it}\\
+    \epsilon_{it} &\sim N(0,  \sigma^2)
+\end{align*}
+$$
+Where $y_{it}$ is the continuous MHI-5 score for each person $i$ over age $t$; $\beta_{j}$ is the mean MHI-5 estimate for each $j = 1...6$ birth cohort, after accounting for variations in trend over age; and $f_{[j]}$ are smooth functions for the trend in MHI-5 scores over age for each cohort; and $f(year)$ is a smooth function of period.  
+
+The centered smooth effect of period (after accounting for nonlinear age and cohort effects) is shown in Figure S1. The trend shows a slow decline in average MHI-5 scores from 2007 but which becomes more exaggerated from around 2017. However, we have already shown that this trajectory is not the same across all age-groups or cohorts (e.g., Figure 1).
+
+We detrended the period effect from the main results by including the linear term for year, and estimating the smooth (nonlinear) differences in mental health between each cohort. The resulting cohort smooths shown in Figure S2 now represent effects detrended by the linear period effect, and so no longer show the common negative trend in mental health over age/time (Figure S2, left panels). However the difference smooths (Figure 2, right panel) still show the negative interaction is present at younger cohorts relative to older cohorts.  
+
+<br>
+
+### Psychological distress  
+
+K10 scores (psychological distress: where higher scores indicate greater distress) were collected in alternate years from 2007 to 2019 in HILDA. We modelled the age and cohort effects in the K10 scores in a GAMM model similar to that described for MHI-5 scores. The corresponding trajectories for each cohort are shown in Figure S3 and confirm psychological distress was higher for more recent cohorts than earlier cohorts at the same age, consistent with the main results for MHI-5 scores.  
+
+<br>
+
+### Prevalence of mental illness  
+
+The MHI-5 has good psychometric properties when identifying DSM-V disorders in a community sample [@batterham2018assessing] and it has proven useful as a screening tool for depression and anxiety [@ware2000sfu]. While the MHI-5 is not a diagnostic instrument, Berwick et al [@berwick1991performance] and Ware et al [@ware1993sf] showed that the optimal cut-off for detecting depression or anxiety is 52 or less, on the 0-100 scale. This has thus become a frequently used MHI-5 cut-off point to identify risk of mental illness [@batterham2018assessing, @bultmann2006depressive, @holmes1998short, @rumpf2001screening, @strand2003measuring, @thorsen2013predictive], and we follow that convention and use the same cut-off to determine whether a person is at risk of mental illness or not.  
+
+We modelled the prevalence of mental illness for each age-group and cohort in a GAMM model similar to that described for MHI-5 scores in the main text, with the distributional assumptions updated to reflect the binary outcome. The results are presented in Figure S4, and confirm that mental illness was higher for more recent cohorts than earlier cohorts at the same age, consistent with the main results for MHI-5 scores.   
+
+<br>
+
+### Gender differences  
+
+The birth cohort trajectories in mental health (MHI-5 scores) over time were modelled separately for men and women. The results are shown in Figure S5 and confirm that while women have lower average MHI-5 scores, men and women have similar trajectory differences between cohorts.  
+
+<br>
+
+### Excluding the top-up sample  
+
+We confirmed the declining mental health trajectories were not due to the addition of new respondents in the HILDA Survey. To maintain the representativeness of the survey over time, the HILDA Survey added new respondents in 2011 via a top-up sample. This was also around the same time that declines in mental health can be observed in Figure 1, left panel of the main text. We conducted an analysis excluding the top-up sample members to confirm the declining mental health trajectories were not driven by the specific respondents in the top-up sample (Figure S6).  
+
+
+<br>
+
+### Social demand effects  
+
+Individuals may conceal poor mental health when surveyed by a unfamiliar interviewer due to unmeasured social demand characteristics. The HILDA Survey assigns the same interviewer to households over time so this effect can be ameliorated by excluding the first survey from each person. Note the MHI-5 is part of the self-complete questionnaire (SCQ) so no interviewer is present and we expect social demand characteristics to be low. The mental health trajectories after excluding the first interview are shown in Figure S7, and the results confirm that social demand characteristics did not substantially change the cohort trajectories.     
+
+<br>
+
+### Attrition effects  
+
+We examined the effect of panel attrition (i.e., missingness) on the main results due to concerns that the probability of attrition varied with the experience of mental health. For instance, if people with deteriorating mental health were more likely to leave the panel, this could produce a bias since people with lower mental health are not likely to be observed or measured in the results. When that bias varies with age or cohort such that older people or earlier cohorts are more likely to be missing in the data when their mental health declines, then that could produce a bias consistent with the results we observed (i.e., a confound).  
+
+We examined the effect of attrition in two different ways. In the first approach, we estimated the dependency between mental health and missingness in the following year, including any interactions with cohort. If the dependency between mental health and missingness varies by cohort such that older cohorts were more likely to be missing with declines in mental health (i.e., $\beta < 0$), then that could contribute to the different cohort tragectories reported in the main analysis (i.e., a confound). Thus we test the interaction between mental health and cohort on missingness, and report the marginal effect of MHI-5 score on probability of missingness for each cohort. In a post-estimation procedure we tested whether the estimated dependencies ($\beta$s) for each cohort were more negative for earlier cohorts than recent cohorts.
+
+
+To estimate the dependency between mental health and attrition in the first approach, we constructed a dummy variable indicating whether the MHI-5 score was missing the following year, for each individual. Note that this indicator cannot be calculated for the final wave used in our analysis (Wave 20), as we cannot determine whether the MHI-5 score will or will not be missing in the subsequent survey wave. On average, in about 5 percent of person-year observations (*n* = 13,061) the MHI-5 score was missing in the following survey wave. The missingness dummy was regressed on MHI-5 scores in a multilevel model with random intercepts for person and year dummies to estimate the total dependency between missingness and mental health. We also included interaction terms between MHI-5 scores and each birth cohort, and in a post-estimation procedure compared the dependency between mental health and missingness between cohorts.  
+
+The results showed that a model including MHI-5 scores predicted significantly more variance in missingness than a null model ($\chi^2 = 163.14$, *p* < .001), confirming a dependency existed between mental health and missingness. This is consistent with previous research showing a small but significant effect existed (OR = 0.992) [c.f., OR = 0.991, @perales2018respondent]. The dependency with mental health also interacted with birth cohort ($\chi^2 = 59.77$, *p* < .001), and Figure S8 shows the estimated marginal probabilities of missingness at three different levels of MHI-5 scores, stratified by cohort. The figure shows the probability of missingness was higher with lower MHI-5 scores for each cohort, however differences in this relationship between cohorts are hard to discern. Table S1 shows the post-estimation comparison of the estimated dependencies ($\beta$s) between adjacent cohorts, with Tukey adjustment for multiple comparisons. The difference in dependency between adjacent cohorts were partially consistent with earlier cohorts being more likely to be missing with lower mental health (i.e., a confound with the main results), however the effects were small (absolute log ORs < .01) and mostly non-significant.   
+
+In the second approach we re-estimated the smooth differences between cohorts after excluding those people whose final observation was missing (i.e., due to attrition). To do this we identified among the subset of people with missing data any person who did not return after their most recent missing interview, as a proxy of attrition. This included anyone with a missing MHI-5 score in the final wave (2020). We re-conducted the main analysis of smooth difference trends after excluding the attrition subset. Figure S9 shows that excluding persons who eventually are lost to attrition did not change the differences between cohorts, as mental health is lower in more recent cohort relative to earlier cohorts at the same age.  
+
+Overall the results indicate a dependency between poorer mental health and missingness exists, however it is small and does not appear to explain the differences between cohort trajectories we observe in the main analysis. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+## Results
+
+```{r load_fullfit, include=F}
+fit <- read_rds("results/full_fit_w_period.rds")
+
+plot_obj <- plot(fit, seWithMean = T)
+```
+
+### Figure S1. Smoothed effect of period  
+```{r fig_S1, fig.dim=c(7, 4), warning=F}
+as_tibble(plot_obj[[7]][c("x", "se", "fit")]) %>%
+  ggplot(aes(x = x)) +
+    geom_hline(aes(yintercept=0), size = 0.1) + 
+    geom_ribbon(aes(ymin = fit - se, ymax = fit + se, y = NULL),
+                fill = "grey80") +
+    geom_line(aes(y = fit)) +
+    labs(x = "\n Survey year", y = "centered MHI-5 score") +
+    theme_minimal() +
+    theme(panel.grid = element_blank())
+```
+
+**Fig. S1**. Smoothed effect of period. Mental health tended to decline after 2007.  
+
+
+\newpage
+
+### Figure S2. Detrending period effects: Centered cohort trajectories (left) and their differences to the subsequent cohort (right) 
+```{r prep_S2, include=F}
+# load the models
+gam.list <- list(
+  `90v80s` = read_rds("results/linear_period/gam_90v80.rds") %>% .$gam,
+  `80v70s` = read_rds("results/linear_period/gam_80v70.rds") %>% .$gam,
+  `70v60s` = read_rds("results/linear_period/gam_70v60.rds") %>% .$gam,
+  `60v50s` = read_rds("results/linear_period/gam_60v50.rds") %>% .$gam,
+  `50v40s` = read_rds("results/linear_period/gam_50v40.rds") %>% .$gam
+)
+
+# calculate the difference smooths
+difference.smooths <- gam.list %>% 
+  map2(.x = ., .y = names(gam.list), .f = ~{
+    
+    par(mfrow = c(2, 1), ask=F)
+    plot_obj <- plot(.x, seWithMean = T)
+    # seWithMean = T for confidence intervals that include the uncertainty about
+    # the overall mean as well as the centred smooth itself. This results in 
+    # intervals with close to nominal (frequentist) coverage probabilities 
+    # (Marra & Woods, 2012).
+    
+    bind_rows(
+      
+      as.data.frame(plot_obj[[1]][c("x", "se", "fit")]) %>%
+        mutate(cohort = paste0("19", substring(.y, 4, 6), " smooth")),
+      
+      as.data.frame(plot_obj[[2]][c("x", "se", "fit")]) %>%
+        mutate(cohort = paste0("19", substring(.y, 1, 2), " difference"))
+    )
+    
+  }) 
+
+
+difference_plot <- function(.df) {
+  ggplot(.df, aes(x = x, y = fit)) +
+    geom_hline(aes(yintercept=0), size = 0.1) + 
+    geom_ribbon(aes(ymin = fit - se, ymax = fit + se, y = NULL), fill = "grey80") +
+    geom_line() +
+    facet_wrap(~cohort) +
+    labs(x = "Age (years)", y = "MHI-5 units") +
+    theme_minimal(base_size = 9) +
+    theme(panel.grid = element_blank(),
+          axis.title = element_text(size = 7))
+}
+
+p1 <- difference_plot(difference.smooths[[1]])
+p2 <- difference_plot(difference.smooths[[2]])
+p3 <- difference_plot(difference.smooths[[3]])
+p4 <- difference_plot(difference.smooths[[4]])
+p5 <- difference_plot(difference.smooths[[5]])
+```
+
+```{r prep_S2_superseded, eval=F}
+# In contrast to the results reported in Figure 2, these difference smooths are 
+# not directly estimated and so while each comparison includes overlapping ages,
+# age is not matched exactly in each pairwise comparison (up to ±5 years lag may
+# be present). Nevertheless, the pattern of differences supports the same 
+# inferences drawn from Figure 2 (main text) and demonstrates that period 
+# effects are not an influential presence in the cohort differences we report 
+# here.  
+
+func1 <- function(x) round(seq(min(x), max(x), 1))
+func2 <- function(x) round(seq(min(x), max(x), 2))
+
+reference_plots <- bind_rows(
+  as.data.frame(plot_obj[[1]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1940s smooth",
+           age = x + 65,
+           fit = fit + 76.6,
+           y = if_else(age < 52 | age > 80, NA_real_, fit)),
+  as.data.frame(plot_obj[[2]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1950s smooth",
+           age = x + 56,
+           fit = fit + 74.7,
+           y = if_else(age < 42 | age > 70, NA_real_, fit)),
+  as.data.frame(plot_obj[[3]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1960s smooth",
+           age = x + 46,
+           fit = fit + 73.3,
+           y = if_else(age < 32 | age > 60, NA_real_, fit)),
+  as.data.frame(plot_obj[[4]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1970s smooth",
+           age = x + 37,
+           fit = fit + 72.9,
+           y = if_else(age < 22 | age > 50, NA_real_, fit)),
+  as.data.frame(plot_obj[[5]][c("x", "se", "fit")]) %>%
+    mutate(cohort = "1980s smooth",
+           age = x + 27,
+           fit = fit + 72.2,
+           y = if_else(age < 15 | age > 40, NA_real_, fit))
+) %>%
+  mutate(cohort = fct_rev(cohort))
+
+
+
+p1 <- ggplot(reference_plots, aes(x = age)) +
+  geom_ribbon(aes(ymin = fit - se, ymax = fit + se, y = NULL),
+              fill = "grey80") +
+  geom_line(aes(y = y)) +
+  scale_y_continuous(breaks = func2) +
+  facet_wrap(~cohort, ncol = 1, scales ="free") +
+  labs(x = "Age (years)", y = "MHI-5 score") +
+  theme_minimal(base_size = 9) +
+  theme(panel.grid = element_blank(),
+        axis.title = element_text(size = 7))
+
+#### difference plots ####
+# # https://fromthebottomoftheheap.net/2017/10/10/difference-splines-i/
+smooth_diff <- function(model, f1, f2, var, alpha = 0.05,
+                        unconditional = TRUE) {
+  
+  pdat <- expand.grid(
+    age = -10:10,
+    fcohort = as.factor(c(f1, f2)),
+    year = 2001:2020)
+  
+  xp <- predict(model, newdata = pdat, type = 'lpmatrix')
+  c1 <- grepl(f1, colnames(xp))
+  c2 <- grepl(f2, colnames(xp))
+  r1 <- pdat[[var]] == f1
+  r2 <- pdat[[var]] == f2
+  ## difference rows of xp for data from comparison
+  X <- xp[r1, ] - xp[r2, ]
+  ## zero out cols of X related to splines for other lochs
+  X[, ! (c1 | c2)] <- 0
+  ## zero out the parametric cols
+  X[, !grepl('^s\\(', colnames(xp))] <- 0
+  dif <- X %*% coef(model)
+  se <- sqrt(rowSums((X %*% vcov(model, unconditional = unconditional)) * X))
+  crit <- qt(alpha/2, df.residual(model), lower.tail = FALSE)
+  upr <- dif + (crit * se)
+  lwr <- dif - (crit * se)
+  data.frame(pair = paste(f1, f2, sep = '-'),
+             age = -10:10,
+             diff = dif,
+             se = se,
+             upper = upr,
+             lower = lwr)
+}
+
+
+difference_plots <- bind_rows(
+  smooth_diff(fit, '1990s', '1980s', 'fcohort') %>%
+    mutate(age = age + 24,
+           diff = if_else(age < 15 | age > 30, NA_real_, diff)),
+  smooth_diff(fit, '1980s', '1970s', 'fcohort') %>%
+    mutate(age = age + 27,
+           diff = if_else(age < 15 | age > 40, NA_real_, diff)),
+  smooth_diff(fit, '1970s', '1960s', 'fcohort') %>%
+    mutate(age = age + 37,
+           diff = if_else(age < 22 | age > 50, NA_real_, diff)),
+  smooth_diff(fit, '1960s', '1950s', 'fcohort') %>%
+    mutate(age = age + 46,
+           diff = if_else(age < 32 | age > 60, NA_real_, diff)),
+  smooth_diff(fit, '1950s', '1940s', 'fcohort') %>%
+    mutate(age = age + 56,
+           diff = if_else(age < 42 | age > 70, NA_real_, diff))
+) %>%
+  mutate(pair = fct_rev(pair))
+
+
+p2 <- ggplot(difference_plots, aes(x = age, y = diff, group = pair)) +
+    geom_hline(aes(yintercept=0), size = 0.1) + 
+    geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2) +
+    geom_line() +
+    scale_y_continuous(breaks = func2) +
+    facet_wrap(~ pair, ncol = 1, scales = "free") +
+    labs(x = NULL, y = NULL) +
+    theme_minimal(base_size = 9) +
+    theme(panel.grid = element_blank(),
+          axis.title = element_text(size = 7))
+```
+
+```{r fig_S2, warning=F, fig.dim=c(4, 8), out.width=400, out.height=800}
+p1 / p2 / p3 / p4 / p5
+```
+
+**Fig. S2**. Centered cohort trajectories (left) and their difference to the subsequent cohort (right), after adjustment for any linear period effect. Mental health (MHI-5 scores) were lower for later cohorts than earlier cohorts at the same age, consistent with Figure 2 in the main text. 
+
+
+\newpage
+
+### Figure S3. Cohort trajectories in psychological distress (K10 scores)
+```{r fig_S3, warning=F, fig.dim=c(7,6)}
+hilda.data %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  filter(pdk10s > 0) %>%
+  ggplot(aes(x = age, y = pdk10s)) +
+    geom_smooth(aes(group = 1), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, color = "black", size = .5, linetype = "dashed") +
+    geom_smooth(aes(group = cohort, color = cohort), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, alpha = 0.2) +
+    labs(
+      subtitle = "Smoothed K10 scores (10-50)", 
+      y = "", x = "\n Age (years)") +
+    scale_color_manual(values = grey.colors(6, rev = T)) +
+    theme_minimal() +
+    theme(plot.title = element_text(face = "bold"),
+          legend.title = element_text(size = 10),
+          legend.position = c(0.9, 0.82),
+          axis.title.x = element_text(size = 10))
+```
+
+**Fig. S3**. Cohort trajectories in psychological distress (K10 scores). Psychological distress was higher for later cohorts than earlier cohorts at the same age.
+
+\newpage
+
+### Figure S4. Age and cohort effects on prevalence of mental illness
+```{r fig_S4, fig.dim=c(9, 4.5), out.width=700, out.height=350}
+ylims = c(0.05, 0.225)
+
+plot.data <- hilda.data %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  filter(ghmh > 0) %>%
+  filter(age_group %notin% c("0-14", "75-84", "85+")) %>%
+  mutate(illness = as.numeric(ghmh < 52))
+
+p1 <- ggplot(plot.data, aes(x = year, y = illness)) +
+  geom_smooth(aes(group = age_group, color = age_group), 
+              method = "gam", formula = y ~ s(x, bs = "cs"), se=F) +
+  labs(
+    subtitle = paste("Prevalence of MHI-5 score < 52 by age group"), 
+    y = "", x = "\n Survey year") +
+  coord_cartesian(ylim = ylims) +
+  scale_color_manual(values = rev(blues9)) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10),
+        legend.position = c(0.25, 0.75),
+        axis.title.x = element_text(size = 10))
+
+
+
+p2 <- ggplot(plot.data, aes(x = age, y = illness)) +
+  geom_smooth(aes(group = 1), 
+              method = "gam", formula = y ~ s(x, bs = "cs"), 
+              se=F, color = "black", size = .5, linetype = "dashed") +
+  geom_smooth(aes(group = cohort, color = cohort), 
+              method = "gam", formula = y ~ s(x, bs = "cs"), 
+              se=F, alpha = 0.2) +
+  labs(
+    subtitle = "Prevalence of MHI-5 score < 52 by cohort",
+    y = "", x = "\n Age (years)") +
+  coord_cartesian(ylim = ylims) +
+  scale_color_manual(values = blues9[3:9]) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10),
+        legend.position = c(0.85, 0.75),
+        axis.title.x = element_text(size = 10))
+
+p1 + p2
+```
+
+**Fig. S4**. Age and cohort effects on prevalence of mental illness. The prevalence of mental illness varied between age-groups and cohorts in a similar pattern as psychological distress. Prevalence was higher for younger cohorts than older cohorts at the same age.  
+
+\newpage
+
+### Figure S5. Cohort trajectories in men and women
+```{r fig_S5, fig.dim=c(9, 4.5), out.width=700, out.height=350}
+reds <- RColorBrewer::brewer.pal(6, "Reds")
+ylims = c(65, 80)
+
+p1 <- hilda.data %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  filter(ghmh > 0) %>%
+  filter(sex == "Male") %>%
+  ggplot(aes(x = age, y = ghmh)) +
+    geom_smooth(aes(group = 1), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, color = "black", size = .5, linetype = "dashed") +
+    geom_smooth(aes(group = cohort, color = cohort), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, alpha = 0.2) +
+    labs(
+      subtitle = "Smoothed MHI-5 scores 0-100 (men)", 
+      y = "", x = "\n Age (years)") +
+    coord_cartesian(ylim = ylims) +
+    scale_color_manual(values = blues9[3:9]) +
+    theme_minimal() +
+    theme(plot.title = element_text(face = "bold"),
+          legend.title = element_text(size = 10),
+          legend.position = c(0.85, 0.25),
+          axis.title.x = element_text(size = 10))
+
+p2 <- hilda.data %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  filter(ghmh > 0) %>%
+  filter(sex == "Female") %>%
+  ggplot(aes(x = age, y = ghmh)) +
+  geom_smooth(aes(group = 1), 
+              method = "gam", formula = y ~ s(x, bs = "cs"), 
+              se=F, color = "black", size = .5, linetype = "dashed") +
+  geom_smooth(aes(group = cohort, color = cohort), 
+              method = "gam", formula = y ~ s(x, bs = "cs"), 
+              se=F, alpha = 0.2) +
+  labs(
+    subtitle = "Smoothed MHI-5 scores 0-100 (women)", 
+    y = "", x = "\n Age (years)") +
+  coord_cartesian(ylim = ylims) +
+  scale_color_manual(values = reds) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"),
+        legend.title = element_text(size = 10),
+        legend.position = c(0.85, 0.25),
+        axis.title.x = element_text(size = 10))
+
+p1 + p2
+```
+
+**Fig. S5**. Cohort trajectories in mental health for men (left panel) and women (right panel). Women have lower average scores than men, however men and women have similar trajectory differences between cohorts.  
+
+\newpage
+
+### Figure S6. Cohort trajectories in mental health excluding the top-up sample
+```{r fig_S6, fig.dim=c(7,6)}
+hilda.data %>%
+  filter(!topup) %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  filter(ghmh > 0) %>%
+  ggplot(aes(x = age, y = ghmh)) +
+    geom_smooth(aes(group = 1), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, color = "black", size = .5, linetype = "dashed") +
+    geom_smooth(aes(group = cohort, color = cohort), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, alpha = 0.2) +
+    labs(
+      subtitle = "Smoothed MHI-5 scores 0-100 (excluding the top-up sample)", 
+      y = "", x = "\n Age (years)") +
+    scale_color_manual(values = blues9[3:9]) +
+    theme_minimal() +
+    theme(plot.title = element_text(face = "bold"),
+          legend.title = element_text(size = 10),
+          legend.position = c(0.9, 0.2),
+          axis.title.x = element_text(size = 10))
+```
+
+**Fig. S6**. Cohort trajectories in mental health excluding the top-up sample. Excluding the top-up sample did not greatly impact the cohort trajectories (compare to Figure 1 right panel).  
+
+\newpage
+
+### Figure S7. Cohort trajectories in mental health excluding the first survey  
+```{r fig_S7, fig.dim=c(7,6)}
+hilda.data %>%
+  filter(cohort %in% c("1940s", "1950s", "1960s", "1970s", "1980s", "1990s")) %>%
+  filter(ghmh > 0) %>%
+  group_by(xwaveid) %>%
+  mutate(first_interview = year == min(year)) %>% 
+  ungroup() %>%
+  filter(!first_interview) %>%
+  ggplot(aes(x = age, y = ghmh)) +
+    geom_smooth(aes(group = 1), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, color = "black", size = .5, linetype = "dashed") +
+    geom_smooth(aes(group = cohort, color = cohort), 
+                method = "gam", formula = y ~ s(x, bs = "cs"), 
+                se=F, alpha = 0.2) +
+    labs(
+      subtitle = "Smoothed MHI-5 scores 0-100 (excluding the first survey)", 
+      y = "", x = "\n Age (years)") +
+    scale_color_manual(values = blues9[3:9]) +
+    theme_minimal() +
+    theme(plot.title = element_text(face = "bold"),
+          legend.title = element_text(size = 10),
+          legend.position = c(0.9, 0.2),
+          axis.title.x = element_text(size = 10))
+```
+
+**Fig. S7**. Cohort trajectories in mental health excluding the first survey response. Excluding the first survey response from each person to reduce social demand effects in the results did not substantially change the cohort trajectories (compare to Figure 1 right panel).  
+
+\newpage
+
+### Figure S8. Predicted probabilities of missingness by mental health and cohort
+```{r figure_S8, fig.dim=c(7, 4)}
+ghmh.3 <- read_rds("results/missingness_3.rds")
+
+ggpredict(ghmh.3, terms = c("cohort", "ghmh [52, 64, 84]")) %>% 
+  plot() +
+  labs(title = "", y = "", color = "MHi-5 score")
+```
+
+```{r eval=F}
+p <- ggpredict(ghmh.3, terms = c("cohort", "ghmh [52, 64, 76]")) 
+
+ggplot(p, aes(x = x, y = predicted, colour = group)) +
+  # geom_linerange(aes(ymin = conf.low, ymax = conf.high,), 
+  #                position = position_dodge(width = .5)) +
+  geom_point(position = position_dodge(width = .5),
+             shape = 21, size = 4, fill = "white") +
+  geom_line(aes(group = x), position = position_dodge(width = .5), color = "black")
+```
+
+**Fig. S8**. Marginal probabilities of missing MHI-5 scores in the following year, stratified by cohort and MHI-5 score. The probability of missingness in the next year was higher for lower MHI-5 scores for each cohort.  
+
+\newpage
+
+### Figure S9. Smooth differences between cohort trajectories after excluding persons due to attrition 
+
+```{r prep_S9, include=F}
+# models
+gam.list <- list(
+  `90v80s` = read_rds("results/end_missing/gam_90v80.rds") %>% .$gam,
+  `80v70s` = read_rds("results/end_missing/gam_80v70.rds") %>% .$gam,
+  `70v60s` = read_rds("results/end_missing/gam_70v60.rds") %>% .$gam,
+  `60v50s` = read_rds("results/end_missing/gam_60v50.rds") %>% .$gam,
+  `50v40s` = read_rds("results/end_missing/gam_50v40.rds") %>% .$gam
+)
+
+# store the difference smooths
+difference.smooths <- gam.list %>% 
+  map2(.x = ., .y = names(gam.list), .f = ~{
+    
+    par(mfrow = c(2, 1), ask=F)
+    plot_obj <- plot(.x, seWithMean = T)
+    # seWithMean = T for confidence intervals that include the uncertainty about
+    # the overall mean as well as the centred smooth itself. This results in 
+    # intervals with close to nominal (frequentist) coverage probabilities 
+    # (Marra & Woods, 2012).
+    
+    bind_rows(
+      
+      as.data.frame(plot_obj[[1]][c("x", "se", "fit")]) %>%
+        mutate(cohort = paste0("19", substring(.y, 4, 6), " smooth")),
+      
+      as.data.frame(plot_obj[[2]][c("x", "se", "fit")]) %>%
+        mutate(cohort = paste0("19", substring(.y, 1, 2), " difference"))
+    )
+    
+  }) 
+
+difference_plot <- function(.df) {
+  ggplot(.df, aes(x = x, y = fit)) +
+    geom_hline(aes(yintercept=0), size = 0.1) + 
+    geom_ribbon(aes(ymin = fit - se, ymax = fit + se, y = NULL),
+                fill = "grey80") +
+    geom_line() +
+    facet_wrap(~cohort) +
+    labs(x = "Age (years)", y = "MHI-5 units") +
+    theme_minimal(base_size = 9) +
+    theme(panel.grid = element_blank(),
+          axis.title = element_text(size = 7))
+}
+
+p1 <- difference_plot(difference.smooths[[1]])
+p2 <- difference_plot(difference.smooths[[2]])
+p3 <- difference_plot(difference.smooths[[3]])
+p4 <- difference_plot(difference.smooths[[4]])
+p5 <- difference_plot(difference.smooths[[5]])
+```
+```{r figure_S9, fig.dim=c(4, 8), out.width=400, out.height=800}
+p1 / p2 / p3 / p4 / p5
+```
+
+\newpage
+
+### Table S1. Cohort differences in dependency between missingness and mental health
+```{r table_S1}
+emtrends(ghmh.3, pairwise ~ cohort, var = "ghmh")$contrasts %>%
+  as_tibble() %>%
+  filter(contrast %in% c("1940s - 1950s", "1950s - 1960s", "1960s - 1970s",
+                         "1970s - 1980s", "1980s - 1990s")) %>%
+  select(-df) %>%
+  rename(difference = estimate) %>%
+  flextable() %>%
+  fontsize(size = 9, part = "all") %>%
+  autofit()
+
+# contrast       estimate      SE  df z.ratio p.value
+# 1940s - 1950s -0.001696 0.00253 Inf  -0.671  0.9851
+# 1950s - 1960s -0.008977 0.00210 Inf  -4.272  0.0003
+# 1960s - 1970s -0.001524 0.00192 Inf  -0.795  0.9684
+# 1970s - 1980s  0.000298 0.00178 Inf   0.167  1.0000
+# 1980s - 1990s -0.003513 0.00182 Inf  -1.926  0.3861
+```
+
+
+
+\newpage
+
+### SI Dataset S1 (dataset_one.txt)  
+
+The full dataset used in this report is available by application to the Melbourne Institute, University of Melbourne, VIC, Australia. Here we provide a sufficient subset to replicate the main model, along with R code to perform the analysis.  
+
+<br>
+
+<br>
+
+
+## References  
+
+<br>
+
