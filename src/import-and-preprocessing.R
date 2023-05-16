@@ -1,9 +1,9 @@
-#### Modern Work ####
-# For Blackdog Institute collaboration paper
+#### The kids are not ok ####
+# For PNAS paper
 # RW Morris
 # 
 # Preprocessing 
-# Oct 12th 2022
+# May 5th 2023
 # 
 #### Setup ####
 library(tidyverse)
@@ -46,8 +46,8 @@ satisfaction <- gather_hilda(hilda, c("losat", "losateo", "losatfs",
 
 #### Wellbeing ####
 mhi5 <- gather_hilda(hilda, "ghmh") %>%
-  spread(code, val) %>%
-  mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .))
+  spread(code, val) # include missingness for supplementary analysis
+  # mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .))
 
 k10 <- gather_hilda(hilda, c("pdk10s", "pdk10rc")) %>%
   spread(code, val) %>%
